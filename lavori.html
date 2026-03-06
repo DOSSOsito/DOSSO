@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOSSO – lavori</title>
+<link rel="icon" href="img/logosemplificato.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="lavori">
+
+<main>
+    <!-- GRIGLIA PRINCIPALE -->
+    <section class="grid">
+        <!-- Colonna 1: logo -->
+        <div class="column">
+            <a href="index.html" class="logo-link">
+                <img src="img/logosemplificato.svg" alt="DOSSO" class="logo">
+            </a>
+        </div>
+
+        <!-- Colonne centrali (desktop only) -->
+        <div class="column desktop-only"></div>
+        <div class="column desktop-only"></div>
+        <div class="column desktop-only"></div>
+        <div class="column desktop-only"></div>
+        <div class="column desktop-only"></div>
+
+        <!-- Colonna ultra-wide extra -->
+        <div class="column ultra-wide-only"></div>
+        <div class="column ultra-wide-only"></div>
+
+        <!-- Colonna menu (sempre ultima colonna della griglia) -->
+        <div class="column menu-column">
+            <div class="menu-wrapper">
+                <input type="checkbox" id="menu-toggle" class="menu-checkbox">
+                <label for="menu-toggle" class="menu-toggle">
+                    <img src="img/scalechiuso.svg" alt="Menu" class="menu-icon">
+                </label>
+                <nav class="dropdown-menu">
+                    <a href="workinprogress.html" class="active">lavori</a>
+                    <a href="servizi.html">servizi</a>
+                    <a href="workinprogress.html">attrezzatura</a>
+                    <a href="workinprogress.html">galleria</a>
+                    <a href="contatti.html">contatti</a>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+    <!-- OVERLAY CENTRALE DESKTOP -->
+    <div class="overlay-central desktop-only">
+        <div class="overlay-grid">
+            <div class="overlay-column"></div>
+            <div class="overlay-column"></div>
+            <div class="overlay-column"></div>
+            <div class="overlay-column"></div>
+            <div class="overlay-column">
+                <!-- Tabella lavori dentro ultima colonna overlay -->
+                <div class="jobs-overlay">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>titolo</th>
+                                <th></th>
+                                <th>categoria</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td><a href="lavori-mmxx.html">MMXX</a></td>
+                                <td></td>
+                                <td><a href="lavori-mmxx.html"></a></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><a href="lavori-the-whore-of-babylon.html">The Whore of Babylon</a></td>
+                                <td></td>
+                                <td><a href="lavori-the-whore-of-babylon.html"></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERLAY MOBILE -->
+    <div class="overlay-central mobile-only">
+        <div class="overlay-grid">
+            <!-- Colonna 1: logo -->
+            <div class="overlay-column">
+                <a href="index.html" class="logo-link">
+                    <img src="img/logosemplificato.svg" alt="DOSSO" class="logo">
+                </a>
+            </div>
+
+            <!-- Colonna centrale vuota -->
+            <div class="overlay-column"></div>
+
+            <!-- Colonna menu -->
+            <div class="overlay-column menu-column">
+                <div class="menu-wrapper">
+                    <input type="checkbox" id="menu-toggle-mobile" class="menu-checkbox">
+                    <label for="menu-toggle-mobile" class="menu-toggle">
+                        <img src="img/scalechiuso.svg" alt="Menu" class="menu-icon">
+                    </label>
+                    <nav class="dropdown-menu">
+                        <a href="workinprogress.html" class="active">lavori</a>
+                        <a href="servizi.html">servizi</a>
+                        <a href="workinprogress.html">attrezzatura</a>
+                        <a href="workinprogress.html">galleria</a>
+                        <a href="contatti.html">contatti</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SFONDO -->
+    <img src="img/Sfondo.jpg" alt="Sfondo" class="full-bg">
+
+</main>
+</body>
+</html>

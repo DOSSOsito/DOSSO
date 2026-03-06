@@ -1,0 +1,738 @@
+/* ============================= */
+/* RESET BASE */
+/* ============================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: clamp(14px, 1.2vw, 16px);
+}
+
+body {
+    font-family: "Lucida Console", monospace;
+    font-weight: 500;
+    letter-spacing: -0.025rem;
+}
+
+/* ============================= */
+/* GRIGLIA 7 COLONNE */
+/* ============================= */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    gap: 10px;
+    padding: 0.625rem 0.625rem 0 0.625rem;
+    position: relative;
+    z-index: 2;
+}
+
+.column {
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0.625rem;
+    min-width: 0;
+}
+
+.column span {
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.column span:hover {
+    text-decoration: underline;
+}
+
+.column span::selection,
+.dropdown-menu a::selection,
+.menu-toggle::selection,
+.overlay-central .overlay-column::selection {
+    background-color: black;
+    color: white;
+}
+
+/* Colonna 1 (logo) */
+.grid > .column:first-child {
+    position: sticky;
+    top: 0;
+    align-self: flex-start; /* si attacca in alto nella griglia */
+    height: 100%;           /* si estende fino al fondo della griglia */
+    z-index: 10;
+}
+
+/* Colonna 7 (menu) */
+.grid > .menu-column {
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    height: 100%;
+    z-index: 10;
+}
+
+/* Overlay centrale scrollabile */
+.overlay-central.desktop-only {
+    overflow-y: auto;      /* permette lo scroll */
+    height: 100%;
+}
+/* Nascondi scrollbar per Chrome, Edge e Safari */
+.overlay-central.desktop-only::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+/* Nascondi scrollbar per Firefox */
+.overlay-central.desktop-only {
+    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE e Edge legacy */
+}
+
+
+/* ============================= */
+/* MENU COLUMN */
+/* ============================= */
+.menu-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: relative;
+    padding-top: 0.625rem;
+    padding-right: 0.625rem;
+    background-color: transparent;
+}
+
+.menu-column:has(.menu-checkbox:checked) {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.menu-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+/*
+.menu-toggle:hover {
+    text-decoration: underline;
+}
+*/
+
+.menu-checkbox {
+    display: none;
+}
+
+.dropdown-menu {
+    display: none;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 0.3125rem;
+    gap: 0.03125rem;
+    width: 100%;
+    padding: 0.5rem;
+    opacity: 0;
+    transform: translateY(-0.3125rem);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.menu-checkbox:checked ~ .dropdown-menu {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dropdown-menu a {
+    cursor: pointer;
+    padding: 0.125rem 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    text-align: right;
+    font-size: 1rem;
+    text-decoration: none;
+    color: black;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu a.active {
+    text-decoration: underline;
+}
+
+/* ============================= */
+/* SFONDO */
+/* ============================= */
+.full-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+/* ============================= */
+/* VISIBILITÀ */
+/* ============================= */
+.desktop-only {
+    display: block;
+}
+
+.mobile-only {
+    display: none;
+}
+
+/* ============================= */
+/* LOGO */
+/* ============================= */
+
+.logo-link {
+  display: inline-block;
+}
+
+.logo {
+  height: 4rem; /* stessa altezza del testo */
+  width: auto;
+  display: block;
+}
+
+.logo:hover {
+  opacity: 0.8;
+}
+
+/* ============================= */
+/* MENU ICON PNG */
+/* ============================= */
+
+.menu-toggle {
+    background: none;   /* puoi anche rimuoverlo se vuoi */
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.menu-icon {
+    height:2rem;   /* regola qui la dimensione */
+    width: auto;
+    display: block;
+}
+
+.menu-icon:hover {
+    opacity: 0.8;
+}
+
+/* Quando il menu è aperto cambia immagine */
+.menu-checkbox:checked + .menu-toggle .menu-icon {
+    content: url("img/scaleaperto.svg");
+}
+
+/* ============================= */
+/* OVERLAY CENTRAL DESKTOP CORRETTO */
+/* ============================= */
+/* Overlay centrale desktop 7 colonne */
+body[class] .overlay-central.desktop-only {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(100% / 7 - 1px);
+    right: calc(100% / 7 - 1.8px);
+    background-color: white;
+    z-index: 3;
+    box-sizing: border-box;
+    padding: 0.625rem 0.625rem 0 0.625rem;
+    overflow: auto;
+}
+
+/* Griglia interna overlay */
+body[class] .overlay-central.desktop-only .overlay-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    width: 100%;
+    gap: 0.625rem;
+    padding: 0;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+/* Colonne interne overlay */
+body[class] .overlay-central.desktop-only .overlay-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    padding: 0;
+    height: 100%;
+
+}
+
+
+/* Jobs overlay */
+.jobs-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0.625rem;
+    z-index: 5; /* sopra overlay, sotto logo/menu */
+    pointer-events: auto;
+}
+
+/* Link overlay (es. email) */
+body[class] .overlay-central.desktop-only .overlay-column a {
+    color: black;
+    text-decoration: none;
+    white-space: normal;         /* permette il capo automatico */
+    overflow-wrap: break-word;   /* forza la rottura delle parole lunghe */
+    word-break: break-word;      /* compatibilità browser */
+}
+
+body[class] .overlay-central.desktop-only .overlay-column a:hover {
+    text-decoration: underline;
+}
+
+/* ============================= */
+/* LINK DOSSO */
+/* ============================= */
+.column:first-child a,
+.overlay-central.mobile-only .overlay-column:first-child a {
+    color: black;
+    text-decoration: none;
+}
+
+.column:first-child a:hover,
+.overlay-central.mobile-only .overlay-column:first-child a:hover {
+    text-decoration: underline;
+}
+
+/* ============================= */
+/* ELENCO LAVORI SOVRAIMPRESSIONE */
+/* ============================= */
+.jobs-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0.625rem;
+    z-index: 5;
+    pointer-events: auto;   /* ✅ permetti hover e click */
+}
+
+/* Tabella come griglia fissa */
+.jobs-overlay table {
+    display: grid;
+    width: 100%;
+    border-collapse: collapse;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr; /* 5 colonne overlay */
+    gap: 0.25rem 0.625rem;            /* stesso gap griglia overlay */
+}
+
+/* Permetti a righe e sezioni di comportarsi come contenitore grid */
+.jobs-overlay thead,
+.jobs-overlay tbody,
+.jobs-overlay tr {
+    display: contents;
+}
+
+/* Celle */
+.jobs-overlay th,
+.jobs-overlay td {
+    padding: 0.5rem 0.5rem 0.5rem, 0;
+    text-align: left;
+    font-family: "Lucida Console", monospace;
+    font-weight: 500;
+    font-size: 1rem;          /* 16px standard */
+    color: black;
+    white-space: nowrap;       /* testo non va a capo */
+    overflow: hidden;          /* taglia testo se troppo lungo */
+    text-overflow: ellipsis;   /* aggiunge "..." se troppo lungo */
+}
+
+/* Solo header: aggiungi spazio sotto */
+.jobs-overlay th {
+    padding-bottom: 2rem;      /* aumenta la distanza dall’inizio della riga contenuto */
+}
+
+/* Spaziatura minima tra le righe dei lavori */
+.jobs-overlay tbody td {
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+}
+
+/* Assegna ogni cella alla colonna giusta della griglia */
+.jobs-overlay th:nth-child(1),
+.jobs-overlay td:nth-child(1) { grid-column: 1; } /* data */
+.jobs-overlay th:nth-child(2),
+.jobs-overlay td:nth-child(2) { grid-column: 2; } /* vuota */
+.jobs-overlay th:nth-child(3),
+.jobs-overlay td:nth-child(3) { grid-column: 3; } /* oggetto */
+.jobs-overlay th:nth-child(4),
+.jobs-overlay td:nth-child(4) { grid-column: 4; } /* soggetto */
+.jobs-overlay th:nth-child(5),
+.jobs-overlay td:nth-child(5) { grid-column: 5; } /* tipo */
+
+/* ============================= */
+/* HOVER E CLICK SULLA RIGA DEL LAVORO */
+/* ============================= */
+
+/* Cursor pointer su tutta la riga */
+.jobs-overlay tbody tr {
+    cursor: pointer;
+}
+
+/* Sottolinea tutto il contenuto della riga al passaggio del mouse */
+.jobs-overlay tbody tr:hover td,
+.jobs-overlay tbody tr:hover td a {
+    text-decoration: underline;
+}
+
+/* Link interni coerenti */
+.jobs-overlay tbody tr a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Porta invisibile, centrata (adatta la posizione e dimensione alla tua porta nello sfondo) */
+#door {
+    position: absolute;
+    top: 55%;           /* regola secondo la porta reale */
+    left: 51%;
+    width: 30px;        /* area cliccabile */
+    height: 60px;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    z-index: 5;         /* sopra lo sfondo */
+}
+
+/* Zoom dello sfondo */
+.full-bg.zoomed {
+    transition: transform 2s ease; /* durata dell’animazione */
+    transform: scale(200);          /* zoom enorme */
+    transform-origin: 50% 50%; /* placeholder, sarà modificato via JS */
+}
+
+body.workinprogress {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+}
+
+.wip-container {
+    text-align: center;
+}
+
+.wip-image {
+    max-width: 200px; /* puoi cambiare dimensione */
+    height: auto;
+    display: block;
+    margin: 0 auto 20px auto;
+}
+
+.wip-text {
+    font-size: 1.2rem;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    color: #000;
+    transition: all 0.2s ease;
+}
+
+.wip-text:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+::selection {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/* Overlay header sopra 3 colonne centrali (colonna 2-4 delle 5 centrali) */
+body[class] .overlay-central.desktop-only .overlay-header-text {
+    position: absolute;
+    top: 80px;   /* distanza dal top dell’overlay */
+    left: calc(20% + 8px);       /* sposta 3px a destra */
+    width: calc(60% - 16px);      /* riduci larghezza totale di 6px (3px per lato) */
+    z-index: 6;
+    box-sizing: border-box;
+}
+
+/* Stile interno */
+body[class] .overlay-central.desktop-only .overlay-header-text h1 {
+    font-size: 2rem;
+    margin-bottom: 60px;
+}
+
+body[class] .overlay-central.desktop-only .overlay-header-text p {
+    font-size: 1rem;
+    line-height: 1.1;
+}
+
+.contact-block {
+    font-size: 1rem;
+    line-height: 1.1;
+    margin-top: 4rem;
+
+}
+
+body[class] .overlay-central.desktop-only .overlay-header-text a {
+    color: black;
+    text-decoration: none;
+}
+
+body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
+    text-decoration: underline;
+}
+
+/* ============================= */
+/* MOBILE <768px UNIFICATO */
+/* ============================= */
+@media (max-width: 768px) {
+   
+    html {
+        font-size: clamp(12px, 1.5vw, 14px);
+    }
+
+    /* ============================= */
+    /* GRIGLIA MOBILE */
+    /* ============================= */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        height: 100vh;
+        gap: 10px;
+        padding: 0.625rem 0.625rem 0 0.625rem;
+    }
+
+    /* Mostra solo 1° colonna e menu, nasconde le altre */
+    .grid > .column:nth-child(n+3):not(.menu-column) {
+        display: none;
+    }
+
+    .menu-wrapper {
+        width: 100%;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+
+    .mobile-only {
+        display: block;
+    }
+
+    /* ============================= */
+    /* OVERLAY MOBILE (SEZIONI) */
+    /* ============================= */
+    body:not(.home) .overlay-central.mobile-only {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: flex-start;
+        padding: 0.625rem 0.625rem 0 0.625rem;
+        box-sizing: border-box;
+        z-index: 4;
+    }
+
+    body:not(.home) .overlay-central.mobile-only .overlay-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        width: 100%;
+        height: 100%;
+        gap: 0.625rem;
+        position: relative;  /* sotto il blocco testo */
+        z-index: 1;
+    }
+
+    body:not(.home) .overlay-central.mobile-only .overlay-column {
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        padding: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        white-space: normal;
+        overflow-wrap: break-word;
+    }
+
+    /* ============================= */
+    /* BLOCCO CONTATTI MOBILE SOPRA GRIGLIA */
+    /* ============================= */
+    .overlay-central.mobile-only .contact-block-mobile {
+        position: absolute;         /* sopra le colonne */
+        top: 5rem;
+        left: 0;                    /* allineamento a sinistra */
+        right: 0;                   /* estende fino al bordo destro */
+        z-index: 20;                /* sopra la griglia 3 colonne */
+        padding: 4rem 0.625rem 0.625rem 0.625rem;              /* padding interno */
+        box-sizing: border-box;
+        line-height: 1.3;
+        font-size: 1rem;
+    }
+
+/* Header DOSSO */
+    .overlay-central.mobile-only h1 {
+        margin-bottom: 4rem; /* distanza tra header e testo */
+    }
+
+    /* Stile testo e link come desktop */
+    .overlay-central.mobile-only .contact-block-mobile p,
+    .overlay-central.mobile-only .contact-block-mobile a {
+        font-family: "Lucida Console", monospace;
+        font-weight: 500;
+        letter-spacing: -0.025rem;
+        color: black;
+        text-decoration: none;
+    }
+
+    .overlay-central.mobile-only .contact-block-mobile a:hover {
+        text-decoration: underline;
+    }
+
+    /* ============================= */
+    /* SFONDO MOBILE HOME E SEZIONI */
+    /* ============================= */
+
+    /* Home: sfondo visibile */
+    body.home {
+        background-color: initial;
+    }
+
+    body.home .full-bg {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0; /* sotto le colonne e overlay */
+    }
+
+    /* Sezioni: sfondo bianco, immagine nascosta */
+    body:not(.home) {
+        background-color: white;
+    }
+
+    body:not(.home) .full-bg {
+        display: none;
+    }
+
+    body:not(.home) .grid {
+    display: none;
+    }
+}
+
+/* Colonne ultra-wide di default nascoste */
+.ultra-wide-only {
+    display: none;
+}
+
+/* ============================= */
+/* MOBILE: menu sempre cliccabile sopra il blocco testo */
+/* ============================= */
+.overlay-central.mobile-only .contact-block-mobile {
+    pointer-events: none; /* tutto il blocco non riceve click */
+}
+
+.overlay-central.mobile-only .contact-block-mobile a,
+.overlay-central.mobile-only .contact-block-mobile p {
+    pointer-events: auto; /* solo link e testo sotto restano cliccabili se vuoi */
+}
+
+.overlay-central.mobile-only .menu-wrapper {
+    position: relative;
+    z-index: 30; /* menu sempre sopra il blocco testo */
+}
+
+/* ============================= */
+/* BLOCCO SERVICES MOBILE SOPRA GRIGLIA */
+/* ============================= */
+.overlay-central.mobile-only .services-block-mobile {
+    position: absolute;         /* sopra le colonne */
+    top: 5rem;                  /* distanza dal top */
+    left: 0;
+    right: 0;                   /* estende fino al bordo destro */
+    z-index: 20;                /* sopra la griglia 3 colonne */
+    padding: 4rem 0.625rem 0.625rem 0.625rem;  /* padding interno */
+    box-sizing: border-box;
+    line-height: 1.3;
+    font-size: 1rem;
+    pointer-events: none;       /* blocco sopra non riceve click */
+}
+
+/* Solo testo e link restano cliccabili/selezionabili */
+.overlay-central.mobile-only .services-block-mobile p,
+.overlay-central.mobile-only .services-block-mobile a {
+    font-family: "Lucida Console", monospace;
+    font-weight: 500;
+    letter-spacing: -0.025rem;
+    color: black;
+    text-decoration: none;
+    pointer-events: auto;       /* link e testo cliccabili */
+}
+
+.overlay-central.mobile-only .services-block-mobile a:hover {
+    text-decoration: underline;
+}
+
+/* h1 nello stesso stile di contatti */
+.overlay-central.mobile-only .services-block-mobile h1 {
+    margin-bottom: 4rem;       /* distanza tra header e testo */
+}
+
+/* ============================= */
+/* ULTRA WIDE ≥2560px */
+/* ============================= */
+@media (min-width: 2560px) {
+
+    html {
+        font-size: clamp(18px, 1.5vw, 20px);
+    }
+
+    /* Griglia principale 9 colonne */
+    .grid {
+        grid-template-columns: repeat(9, 1fr);
+    }
+
+    /* Mostra colonne extra */
+    .ultra-wide-only {
+        display: flex;
+    }
+
+    /* Menu sempre in colonna 9 */
+    .grid > .menu-column {
+        grid-column: 9;
+    }
+
+    /* Overlay centrale: parte dopo colonna 2 e prima colonna 8 */
+    body[class] .overlay-central.desktop-only {
+        left: calc((100% / 9) * 2 + 1px);
+        right: calc((100% / 9) * 2 + 1px);
+    }
+}

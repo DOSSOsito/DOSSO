@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOSSO</title>
+    <link rel="icon" href="img/logosemplificato.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="home">
+<main>
+
+    <!-- Griglia visiva delle colonne -->
+<section class="grid">
+
+    <!-- Colonna 1: logo -->
+    <div class="column">
+        <a href="index.html" class="logo-link">
+            <img src="img/logosemplificato.svg" alt="DOSSO" class="logo">
+        </a>
+    </div>
+
+    <!-- Colonne vuote -->
+    <div class="column"></div>
+    <div class="column"></div>
+    <div class="column desktop-only"></div>
+    <div class="column desktop-only"></div>
+    <div class="column desktop-only"></div>
+
+    <!-- COLONNE ULTRA-WIDE (8 e 9) -->
+    <div class="column desktop-only ultra-wide-only"></div>
+    <div class="column desktop-only ultra-wide-only"></div>
+
+    <!-- Colonna menu -->
+    <div class="column menu-column">
+        <div class="menu-wrapper">
+            <input type="checkbox" id="menu-toggle" class="menu-checkbox">
+            <label for="menu-toggle" class="menu-toggle">
+                <img src="img/scalechiuso.svg" alt="Menu" class="menu-icon">
+            </label>
+            <nav class="dropdown-menu">
+                <a href="workinprogress.html">lavori</a>
+                <a href="servizi.html">servizi</a>
+                <a href="workinprogress.html">attrezzatura</a>
+                <a href="workinprogress.html">galleria</a>
+                <a href="contatti.html">contatti</a>
+            </nav>
+        </div>
+    </div>
+
+</section>
+
+
+    <!-- Sfondo -->
+    <img src="img/Sfondo.jpg" alt="Sfondo" class="full-bg">
+
+    <div id="door"></div>
+
+    <script src="script.js"></script>
+    
+</main>
+
+</body>
+</html>
