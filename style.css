@@ -33,7 +33,7 @@ body {
 }
 
 .column {
-    border: 1px solid rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.3);
     align-items: flex-start;
     justify-content: flex-start;
     padding: 0.625rem;
@@ -209,7 +209,7 @@ body {
 }
 
 .logo {
-  height: 4rem; /* stessa altezza del testo */
+  height: 3rem; /* stessa altezza del testo */
   width: auto;
   display: block;
 }
@@ -279,7 +279,7 @@ body[class] .overlay-central.desktop-only .overlay-column {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    border: 1px solid rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.3);
     padding: 0;
     height: 100%;
 
@@ -473,9 +473,10 @@ body.workinprogress {
 /* Overlay header sopra 3 colonne centrali (colonna 2-4 delle 5 centrali) */
 body[class] .overlay-central.desktop-only .overlay-header-text {
     position: absolute;
-    top: 80px;   /* distanza dal top dell’overlay */
-    left: calc(20% + 8px);       /* sposta 3px a destra */
-    width: calc(60% - 16px);      /* riduci larghezza totale di 6px (3px per lato) */
+    top: 50%;                       /* centro verticale */
+    left: calc(20% + 8px);          /* mantiene l’allineamento alle 3 colonne centrali */
+    width: calc(60% - 16px);        /* larghezza corretta */
+    transform: translateY(-50%);    /* sposta il div verso l’alto della metà della sua altezza */
     z-index: 6;
     box-sizing: border-box;
 }
@@ -489,6 +490,8 @@ body[class] .overlay-central.desktop-only .overlay-header-text h1 {
 body[class] .overlay-central.desktop-only .overlay-header-text p {
     font-size: 1rem;
     line-height: 1.1;
+    text-align: justify;
+    text-justify: inter-word;
 }
 
 .contact-block {
@@ -571,7 +574,7 @@ body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
     }
 
     body:not(.home) .overlay-central.mobile-only .overlay-column {
-        border: 1px solid rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(0, 0, 0, 0.3);
         padding: 0.625rem;
         display: flex;
         flex-direction: column;
@@ -608,6 +611,7 @@ body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
         letter-spacing: -0.025rem;
         color: black;
         text-decoration: none;
+        text-align: justify;
     }
 
     .overlay-central.mobile-only .contact-block-mobile a:hover {
@@ -695,6 +699,8 @@ body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
     color: black;
     text-decoration: none;
     pointer-events: auto;       /* link e testo cliccabili */
+    text-align: justify;
+    text-justify: inter-word;
 }
 
 .overlay-central.mobile-only .services-block-mobile a:hover {
@@ -735,4 +741,22 @@ body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
         left: calc((100% / 9) * 2 + 1px);
         right: calc((100% / 9) * 2 + 1px);
     }
+}
+
+#dvd-logo {
+  position: fixed;
+  width: 400px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s ease;
+  cursor: pointer;
+}
+
+#dvd-logo:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+#dvd-logo:active {
+  transform: translate(-50%, -50%) scale(0.95);
 }
