@@ -11,6 +11,12 @@ html {
     font-size: clamp(14px, 1.2vw, 16px);
 }
 
+html,
+body.home {
+    overflow: hidden;
+    height: 100%;
+}
+
 body {
     font-family: "Lucida Console", monospace;
     font-weight: 500;
@@ -81,7 +87,7 @@ body {
 
 /* Overlay centrale scrollabile */
 .overlay-central.desktop-only {
-    overflow-y: auto;      /* permette lo scroll */
+    overflow-y: hidden;      /* permette lo scroll */
     height: 100%;
 }
 /* Nascondi scrollbar per Chrome, Edge e Safari */
@@ -259,7 +265,7 @@ body[class] .overlay-central.desktop-only {
     z-index: 3;
     box-sizing: border-box;
     padding: 0.625rem 0.625rem 0 0.625rem;
-    overflow: auto;
+    overflow: hidden;
 }
 
 /* Griglia interna overlay */
