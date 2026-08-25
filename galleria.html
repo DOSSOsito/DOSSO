@@ -1,97 +1,264 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DOSSO – galleria</title>
+
+<title>DOSSO – lavori</title>
+
+<link rel="icon" href="img/logosemplificato.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
-<link rel="icon" href="img/logosemplificato.svg" type="image/png+xml">
+
 </head>
-<body class="galleria">
+
+
+<body class="lavori">
+
 
 <main>
-    <!-- GRIGLIA PRINCIPALE -->
-    <section class="grid">
-        <!-- Colonna 1: logo -->
-        <div class="column">
-            <a href="home.html" class="logo-link">
-                <img src="img/logosemplificato.svg" alt="DOSSO" class="logo">
-            </a>
-        </div>
 
-        <!-- Colonne centrali vuote -->
-        <div class="column"></div>
-        <div class="column"></div>
-        <div class="column desktop-only"></div>
-        <div class="column desktop-only"></div>
-        <div class="column desktop-only"></div>
 
-        <!-- Colonna ultra-wide extra -->
-        <div class="column ultra-wide-only"></div>
-        <div class="column ultra-wide-only"></div>
+<!-- GRIGLIA PRINCIPALE -->
 
-        <!-- Colonna 7: menu desktop -->
-        <div class="column menu-column">
-            <div class="menu-wrapper">
-                <input type="checkbox" id="menu-toggle" class="menu-checkbox">
-                <label for="menu-toggle" class="menu-toggle">
-                    <img src="img/scalechiuso.svg" alt="Menu" class="menu-icon">
-                </label>
-                <div class="dropdown-menu">
-                    <a href="workinprogress.html">lavori</a>
-                    <a href="workinprogress.html">galleria</a>
-                    <a href="attrezzatura.html">attrezzatura</a>
-                    <a href="info.html" class="active">info</a>
-                </div>
-            </div>
-        </div>
-    </section>
+<section class="grid">
 
-    <!-- OVERLAY DESKTOP -->
-    <div class="overlay-central desktop-only">
-        <div class="overlay-grid">
-            <div class="overlay-column"></div>
-            <div class="overlay-column"></div>
-            <div class="overlay-column"></div>
-            <div class="overlay-column"></div>
-            <div class="overlay-column"></div>
-        </div>
-    </div>
 
-    <!-- OVERLAY MOBILE -->
-    <div class="overlay-central mobile-only">
-        <div class="overlay-grid">
-            <!-- Colonna 1: logo link -->
-            <div class="overlay-column">
-                <a href="home.html" class="logo-link">
-                    <img src="img/logosemplificato.svg" alt="DOSSO" class="logo">
-                </a>
-            </div>
+<!-- LOGO -->
 
-            <!-- Colonna 2 vuota -->
-            <div class="overlay-column"></div>
+<div class="column">
 
-            <!-- Colonna 3: menu mobile -->
-            <div class="overlay-column menu-column">
-                <div class="menu-wrapper">
-                    <input type="checkbox" id="menu-toggle-mobile" class="menu-checkbox">
-                    <label for="menu-toggle-mobile" class="menu-toggle">
-                        <img src="img/scalechiuso.svg" alt="Menu" class="menu-icon">
-                    </label>
-                    <nav class="dropdown-menu">
-                        <a href="workinprogress.html">lavori</a>
-                    <a href="workinprogress.html">galleria</a>
-                    <a href="attrezzatura.html">attrezzatura</a>
-                    <a href="info.html" class="active">info</a>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
+<a href="home.html" class="logo-link">
+<img src="img/logosemplificato.svg" alt="DOSSO" class="logo">
+</a>
 
-    <!-- SFONDO -->
-    <img src="img/Sfondo.jpg" alt="Sfondo" class="full-bg">
+</div>
+
+
+
+<!-- colonne centrali -->
+
+<div class="column desktop-only"></div>
+<div class="column desktop-only"></div>
+<div class="column desktop-only"></div>
+<div class="column desktop-only"></div>
+<div class="column desktop-only"></div>
+
+
+<!-- ultra wide -->
+
+<div class="column ultra-wide-only"></div>
+<div class="column ultra-wide-only"></div>
+
+
+
+
+<!-- MENU -->
+
+<div class="column menu-column">
+
+<div class="menu-wrapper">
+
+
+<input type="checkbox" id="menu-toggle" class="menu-checkbox">
+
+
+<label for="menu-toggle" class="menu-toggle">
+
+<img src="img/scalechiuso.svg" class="menu-icon">
+
+</label>
+
+
+
+<nav class="dropdown-menu">
+
+<a href="lavori.html">lavori</a>
+<a href="galleria.html" class="active">galleria</a>
+<a href="attrezzatura.html">attrezzatura</a>
+<a href="info.html">info</a>
+
+</nav>
+
+
+</div>
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<!-- OVERLAY CENTRALE DESKTOP -->
+
+
+<div class="overlay-central desktop-only">
+
+
+<div class="overlay-grid">
+
+
+
+<div class="overlay-column"></div>
+<div class="overlay-column"></div>
+<div class="overlay-column"></div>
+<div class="overlay-column"></div>
+<div class="overlay-column"></div>
+
+
+
+
+<!-- TABELLA ATTREZZATURA -->
+
+<div class="jobs-overlay">
+<div class="jobs-table">
+
+  <div class="jobs-header">
+    <div>titolo</div>
+    <div>soggetto</div>
+    <div>tipologia</div>
+    <div>luogo</div>
+    <div>data</div>
+  </div>
+
+  <div class="jobs-body">
+    
+    <a class="row" href="galleriaorigini.html">
+      <div>Origini</div>
+      <div>Dosso Studio</div>
+      <div>archivio</div>
+      <div>Dosso Studio</div>
+      <div>03/2024</div>
+    </a>
+
+    <a class="row" href="galleriaorigini.html">
+      <div>Live The Snookers / Dyspoteque</div>
+      <div>The Snookers / Dyspoteque</div>
+      <div>live</div>
+      <div>Dosso Studio</div>
+      <div>11/2024</div>
+    </a>
+
+    <a class="row" href="galleriaorigini.html">
+      <div>Live The Snookers Rock and Rodes</div>
+      <div>The Snookers</div>
+      <div>live / backstage</div>
+      <div>Piateda (SO)</div>
+      <div>07/2025</div>
+    </a>
+
+    <a class="row" href="galleriaorigini.html">
+  <div>Flanella Fest 2025</div>
+  <div>Flanella Fest</div>
+  <div>live / backstage</div>
+  <div>Serramazzoni (MO)</div>
+  <div>08/2025</div>
+   </a>
+
+
+  </div>
+
+</div>
+
+
+
+
+</div>
+</div>
+</div>
+
+
+<!-- MOBILE -->
+
+
+<div class="overlay-central mobile-only">
+
+
+<div class="overlay-grid">
+
+
+
+<div class="overlay-column">
+
+
+<a href="home.html" class="logo-link">
+
+<img src="img/logosemplificato.svg" class="logo">
+
+</a>
+
+
+</div>
+
+
+
+<div class="overlay-column"></div>
+
+
+
+
+<div class="overlay-column menu-column">
+
+
+<div class="menu-wrapper">
+
+
+<input type="checkbox" id="menu-toggle-mobile" class="menu-checkbox">
+
+
+<label for="menu-toggle-mobile" class="menu-toggle">
+
+<img src="img/scalechiuso.svg" class="menu-icon">
+
+</label>
+
+
+
+<nav class="dropdown-menu">
+
+
+<a href="lavori.html" class="active">lavori</a>
+
+<a href="galleria.html">galleria</a>
+
+<a href="attrezzatura.html">attrezzatura</a>
+
+<a href="info.html">info</a>
+
+
+</nav>
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<img src="img/Sfondo.jpg" class="full-bg">
+
+<div class="grain"></div>
+
+<script src="script.js"></script>
+
+
 </main>
 
+
 </body>
+
 </html>

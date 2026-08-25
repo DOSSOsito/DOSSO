@@ -27,7 +27,7 @@ if (door && background) {
 
 
         setTimeout(() => {
-            window.location.href = "workinprogress.html";
+            window.location.href = "galleria.html";
         }, 1000);
 
     });
@@ -225,7 +225,7 @@ if (headers.length && body) {
 
             headers.forEach(h => {
 
-                h.classList.remove("sort-active");
+                h.classList.remove("sort-active", "sort-asc", "sort-desc");
 
             });
 
@@ -260,6 +260,22 @@ if (headers.length && body) {
                 return;
 
             }
+
+            /* ============================= */
+    /* INDICATORE */
+    /* ============================= */
+
+    if (sortState[index] === 1) {
+        header.classList.add("sort-asc");
+    }
+
+    if (sortState[index] === 2) {
+        header.classList.add("sort-desc");
+    }
+
+
+    header.classList.add("sort-active");
+
 
 
 
@@ -328,41 +344,138 @@ if (headers.length && body) {
 }
 
 /* ============================= */
-/* INTRO SOLO AL PRIMO INGRESSO */
+/* DRAG COLOR INVERSION */
 /* ============================= */
 
-const siteIntro = document.getElementById("site-intro");
+(function () {
 
-if (siteIntro && sessionStorage.getItem("dosso-intro") === "true") {
+    let selecting = false;
 
-    // Elimina subito il flag:
-    // quindi l'animazione non verrà ripetuta
-    sessionStorage.removeItem("dosso-intro");
+    let startX = 0;
+    let startY = 0;
+
+    /* ============================= */
+    /* CREA RETTANGOLO */
+    /* ============================= */
+
+    const selection = document.createElement("div");
+    selection.className = "drag-selection";
+
+    document.body.appendChild(selection);
 
 
-    // Logo + bianco iniziano a dissolversi
-    setTimeout(() => {
+    /* ============================= */
+    /* CREA AREA INVERTITA */
+    /* ============================= */
 
-        siteIntro.classList.add("site-intro-hidden");
+    const invert = document.createElement("div");
+    invert.className = "drag-invert";
 
-    }, 500);
+    document.body.appendChild(invert);
 
 
-    // La home inizia a comparire quasi
-    // alla fine della dissolvenza
-    setTimeout(() => {
+    /* ============================= */
+    /* MOUSE DOWN */
+    /* ============================= */
 
-        document.body.classList.add("home-visible");
+    document.addEventListener("mousedown", function (event) {
 
-    }, 900);
+        /* solo tasto sinistro */
+        if (event.button !== 0) return;
 
-}
-else if (siteIntro) {
+        selecting = true;
 
-    // Se si torna alla home normalmente,
-    // non mostrare l'intro
-    siteIntro.remove();
+        startX = event.clientX;
+        startY = event.clientY;
 
-    document.body.classList.add("home-visible");
+        selection.style.display = "block";
+        invert.style.display = "block";
 
-}
+        selection.style.left = startX + "px";
+        selection.style.top = startY + "px";
+
+        selection.style.width = "0px";
+        selection.style.height = "0px";
+
+        invert.style.left = startX + "px";
+        invert.style.top = startY + "px";
+
+        invert.style.width = "0px";
+        invert.style.height = "0px";
+
+    });
+
+
+    /* ============================= */
+    /* MOUSE MOVE */
+    /* ============================= */
+
+    document.addEventListener("mousemove", function (event) {
+
+        if (!selecting) return;
+
+        const currentX = event.clientX;
+        const currentY = event.clientY;
+
+        const left = Math.min(startX, currentX);
+        const top = Math.min(startY, currentY);
+
+        const width = Math.abs(currentX - startX);
+        const height = Math.abs(currentY - startY);
+
+
+        /* Rettangolo visibile */
+
+        selection.style.left = left + "px";
+        selection.style.top = top + "px";
+
+        selection.style.width = width + "px";
+        selection.style.height = height + "px";
+
+
+        /* Area invertita */
+
+        invert.style.left = left + "px";
+        invert.style.top = top + "px";
+
+        invert.style.width = width + "px";
+        invert.style.height = height + "px";
+
+    });
+
+
+    /* ============================= */
+    /* MOUSE UP */
+    /* ============================= */
+
+    document.addEventListener("mouseup", function () {
+
+        if (!selecting) return;
+
+        selecting = false;
+
+        selection.style.display = "none";
+        invert.style.display = "none";
+
+    });
+
+
+    /* ============================= */
+    /* ESC */
+    /* ============================= */
+
+    document.addEventListener("keydown", function (event) {
+
+        if (event.key === "Escape") {
+
+            selecting = false;
+
+            selection.style.display = "none";
+            invert.style.display = "none";
+
+        }
+
+    });
+
+})();
+
