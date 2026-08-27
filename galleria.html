@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DOSSO – lavori</title>
+<title>DOSSO – galleria</title>
 
 <link rel="icon" href="img/logosemplificato.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
@@ -13,7 +13,7 @@
 </head>
 
 
-<body class="lavori">
+<body class="galleria">
 
 
 <main>
@@ -174,90 +174,149 @@
 
 <!-- MOBILE -->
 
-
 <div class="overlay-central mobile-only">
 
+    <div class="overlay-grid">
 
-<div class="overlay-grid">
+        <!-- COLONNA 1: LOGO -->
+
+        <div class="overlay-column">
+
+            <a href="home.html" class="logo-link">
+                <img src="img/logosemplificato.svg" alt="DOSSO" class="logo">
+            </a>
+
+        </div>
 
 
+        <!-- COLONNA 2 -->
 
-<div class="overlay-column">
+        <div class="overlay-column"></div>
 
 
-<a href="home.html" class="logo-link">
+        <!-- COLONNA 3: MENU -->
 
-<img src="img/logosemplificato.svg" class="logo">
+        <div class="overlay-column menu-column">
 
-</a>
+            <div class="menu-wrapper">
 
+                <input
+                    type="checkbox"
+                    id="menu-toggle-mobile"
+                    class="menu-checkbox"
+                >
+
+                <label
+                    for="menu-toggle-mobile"
+                    class="menu-toggle"
+                >
+                    <img
+                        src="img/scalechiuso.svg"
+                        alt="Menu"
+                        class="menu-icon"
+                    >
+                </label>
+
+                <nav class="dropdown-menu">
+
+                    <a href="lavori.html">lavori</a>
+
+                    <a href="galleria.html" class="active">
+                        galleria
+                    </a>
+
+                    <a href="attrezzatura.html">
+                        attrezzatura
+                    </a>
+
+                    <a href="info.html">
+                        info
+                    </a>
+
+                </nav>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
 
+<!-- TABELLA GALLERIA MOBILE -->
 
-<div class="overlay-column"></div>
+<div class="mobile-jobs">
 
+    <!-- HEADER -->
 
+    <div class="jobs-header">
 
+        <div>titolo</div>
+        <div>luogo</div>
+        <div>data</div>
 
-<div class="overlay-column menu-column">
-
-
-<div class="menu-wrapper">
-
-
-<input type="checkbox" id="menu-toggle-mobile" class="menu-checkbox">
-
-
-<label for="menu-toggle-mobile" class="menu-toggle">
-
-<img src="img/scalechiuso.svg" class="menu-icon">
-
-</label>
+    </div>
 
 
+    <!-- RIGHE -->
 
-<nav class="dropdown-menu">
+    <div class="jobs-body">
 
+        <a class="row" href="galleriaorigini.html">
 
-<a href="lavori.html" class="active">lavori</a>
+            <div>Origini</div>
+            <div>Dosso Studio</div>
+            <div>03/2024</div>
 
-<a href="galleria.html">galleria</a>
-
-<a href="attrezzatura.html">attrezzatura</a>
-
-<a href="info.html">info</a>
-
-
-</nav>
+        </a>
 
 
+        <a class="row" href="galleriaorigini.html">
+
+            <div>Live The Snookers / Dyspoteque</div>
+            <div>Dosso Studio</div>
+            <div>11/2024</div>
+
+        </a>
+
+
+        <a class="row" href="galleriaorigini.html">
+
+            <div>Live The Snookers Rock and Rodes</div>
+            <div>Piateda (SO)</div>
+            <div>07/2025</div>
+
+        </a>
+
+
+        <a class="row" href="galleriaorigini.html">
+
+            <div>Flanella Fest 2025</div>
+            <div>Serramazzoni (MO)</div>
+            <div>08/2025</div>
+
+        </a>
+
+    </div>
 
 </div>
 
 
-</div>
+<!-- SFONDO -->
 
-
-</div>
-
-
-</div>
-
-
-
-
-
-<img src="img/Sfondo.jpg" class="full-bg">
+<img
+    src="img/Sfondo.jpg"
+    alt=""
+    class="full-bg"
+>
 
 <div class="grain"></div>
 
+
 <script src="script.js"></script>
 
-
 </main>
-
 
 </body>
 

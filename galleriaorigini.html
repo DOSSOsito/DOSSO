@@ -1,124 +1,333 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DOSSO – galleria</title>
-<link rel="stylesheet" href="style.css">
-<link rel="icon" href="img/logosemplificato.svg" type="image/png+xml">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DOSSO – galleria</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="img/logosemplificato.svg" type="image/png+xml">
 </head>
-<body class="galleria">
+
+<body class="galleria origini">
 
 <main>
+
+    <!-- ===================================================== -->
     <!-- GRIGLIA PRINCIPALE -->
+    <!-- ===================================================== -->
+
     <section class="grid">
+
         <!-- Colonna 1: logo -->
         <div class="column">
             <a href="home.html" class="logo-link">
-                <img src="img/logosemplificato.svg" alt="DOSSO" class="logo">
+                <img
+                    src="img/logosemplificato.svg"
+                    alt="DOSSO"
+                    class="logo"
+                >
             </a>
         </div>
 
         <!-- Colonne centrali vuote -->
         <div class="column"></div>
         <div class="column"></div>
+
         <div class="column desktop-only"></div>
         <div class="column desktop-only"></div>
         <div class="column desktop-only"></div>
 
-        <!-- Colonna ultra-wide extra -->
+        <!-- Colonne ultra-wide extra -->
         <div class="column ultra-wide-only"></div>
         <div class="column ultra-wide-only"></div>
 
-        <!-- Colonna 7: menu desktop -->
+        <!-- Colonna menu desktop -->
         <div class="column menu-column">
+
             <div class="menu-wrapper">
-                <input type="checkbox" id="menu-toggle" class="menu-checkbox">
-                <label for="menu-toggle" class="menu-toggle">
-                    <img src="img/scalechiuso.svg" alt="Menu" class="menu-icon">
+
+                <input
+                    type="checkbox"
+                    id="menu-toggle"
+                    class="menu-checkbox"
+                >
+
+                <label
+                    for="menu-toggle"
+                    class="menu-toggle"
+                >
+                    <img
+                        src="img/scalechiuso.svg"
+                        alt="Menu"
+                        class="menu-icon"
+                    >
                 </label>
+
                 <div class="dropdown-menu">
-                    <a href="lavori.html">lavori</a>
-                    <a href="galleria.html" class="active">galleria</a>
-                    <a href="attrezzatura.html">attrezzatura</a>
-                    <a href="info.html">info</a>
+
+                    <a href="lavori.html">
+                        lavori
+                    </a>
+
+                    <a href="galleria.html" class="active">
+                        galleria
+                    </a>
+
+                    <a href="attrezzatura.html">
+                        attrezzatura
+                    </a>
+
+                    <a href="info.html">
+                        info
+                    </a>
+
                 </div>
+
             </div>
+
         </div>
+
     </section>
 
-    <!-- OVERLAY CENTRALE DESKTOP -->
+
+    <!-- ===================================================== -->
+    <!-- OVERLAY CENTRALE DESKTOP – GALLERIA ORIGINI -->
+    <!-- ===================================================== -->
+
+    <div class="overlay-central desktop-only">
+
+        <!-- Immagine centrale -->
+        <div class="gallery-image-area">
+
+            <img
+                src="img/galleria/GL01.JPG"
+                alt=""
+                class="gallery-image"
+            >
+
+        </div>
 
 
-<div class="overlay-central desktop-only">
-
-    <div class="gallery-image-area">
-        <img
-    src="img/galleria/GL01.JPG"
-    alt=""
-    class="gallery-image"
->
-</div>
-
-<div class="overlay-grid">
-
-<div class="overlay-column">
-    <button class="gallery-arrow gallery-prev" aria-label="Foto precedente">
-            <img src="img/frecciaprecedente.svg" alt="">
-        </button></div>
-<div class="overlay-column"></div>
-<div class="overlay-column"></div>
-<div class="overlay-column"></div>
-<div class="overlay-column">
-    <button class="gallery-arrow gallery-next" aria-label="Foto successiva">
-            <img src="img/frecciasuccessivo.svg" alt="">
-        </button></div>
-
-
-</div>
-</div>
-</div>
-
-    <!-- OVERLAY MOBILE -->
-    <div class="overlay-central mobile-only">
+        <!-- 5 colonne della galleria -->
         <div class="overlay-grid">
-            <!-- Colonna 1: logo link -->
+
+            <!-- Colonna 1: freccia precedente -->
             <div class="overlay-column">
-                <a href="home.html" class="logo-link">
-                    <img src="img/logosemplificato.svg" alt="DOSSO" class="logo">
-                </a>
+
+                <button
+                    class="gallery-arrow gallery-prev"
+                    aria-label="Foto precedente"
+                >
+                    <img
+                        src="img/frecciaprecedente.svg"
+                        alt=""
+                    >
+                </button>
+
             </div>
 
-            <!-- Colonna 2 vuota -->
+
+            <!-- Colonna 2 -->
             <div class="overlay-column"></div>
 
-            <!-- Colonna 3: menu mobile -->
-            <div class="overlay-column menu-column">
-                <div class="menu-wrapper">
-                    <input type="checkbox" id="menu-toggle-mobile" class="menu-checkbox">
-                    <label for="menu-toggle-mobile" class="menu-toggle">
-                        <img src="img/scalechiuso.svg" alt="Menu" class="menu-icon">
-                    </label>
-                    <nav class="dropdown-menu">
-                        <a href="lavori.html">lavori</a>
-                    <a href="galleria.html" class="active">galleria</a>
-                    <a href="attrezzatura.html">attrezzatura</a>
-                    <a href="info.html">info</a>
-                    </nav>
-                </div>
+
+            <!-- Colonna 3 -->
+            <div class="overlay-column"></div>
+
+
+            <!-- Colonna 4 -->
+            <div class="overlay-column"></div>
+
+
+            <!-- Colonna 5: freccia successiva -->
+            <div class="overlay-column">
+
+                <button
+                    class="gallery-arrow gallery-next"
+                    aria-label="Foto successiva"
+                >
+                    <img
+                        src="img/frecciasuccessivo.svg"
+                        alt=""
+                    >
+                </button>
+
             </div>
+
         </div>
+
     </div>
 
+
+    <!-- ===================================================== -->
+    <!-- HEADER MOBILE -->
+    <!-- ===================================================== -->
+
+    <nav class="mobile-header mobile-only">
+
+        <!-- Logo -->
+        <a
+            href="home.html"
+            class="logo-link"
+        >
+            <img
+                src="img/logosemplificato.svg"
+                alt="DOSSO"
+                class="logo"
+            >
+        </a>
+
+
+        <!-- Menu -->
+        <div class="menu-column">
+
+            <div class="menu-wrapper">
+
+                <input
+                    type="checkbox"
+                    id="menu-toggle-mobile"
+                    class="menu-checkbox"
+                >
+
+                <label
+                    for="menu-toggle-mobile"
+                    class="menu-toggle"
+                >
+                    <img
+                        src="img/scalechiuso.svg"
+                        alt="Menu"
+                        class="menu-icon"
+                    >
+                </label>
+
+
+                <nav class="dropdown-menu">
+
+                    <a href="lavori.html">
+                        lavori
+                    </a>
+
+                    <a href="galleria.html" class="active">
+                        galleria
+                    </a>
+
+                    <a href="attrezzatura.html">
+                        attrezzatura
+                    </a>
+
+                    <a href="info.html">
+                        info
+                    </a>
+
+                </nav>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ===================================================== -->
+    <!-- GALLERIA FOTO MOBILE -->
+    <!-- ===================================================== -->
+
+    <div class="gallery-mobile mobile-only">
+
+        <div class="gallery-mobile-images">
+
+            <img
+                src="img/galleria/GL01.JPG"
+                alt="Origini - foto 01"
+                class="gallery-mobile-photo"
+            >
+
+            <img
+                src="img/galleria/GL02.JPG"
+                alt="Origini - foto 02"
+                class="gallery-mobile-photo"
+            >
+
+            <img
+                src="img/galleria/GL03.JPG"
+                alt="Origini - foto 03"
+                class="gallery-mobile-photo"
+            >
+
+            <img
+                src="img/galleria/GL04.JPG"
+                alt="Origini - foto 04"
+                class="gallery-mobile-photo"
+            >
+
+            <img
+                src="img/galleria/GL05.JPG"
+                alt="Origini - foto 05"
+                class="gallery-mobile-photo"
+            >
+
+            <img
+                src="img/galleria/GL06.JPG"
+                alt="Origini - foto 06"
+                class="gallery-mobile-photo"
+            >
+
+            <img
+                src="img/galleria/GL07.JPG"
+                alt="Origini - foto 07"
+                class="gallery-mobile-photo"
+            >
+
+            <img
+                src="img/galleria/GL08.JPG"
+                alt="Origini - foto 08"
+                class="gallery-mobile-photo"
+            >
+
+            <img
+                src="img/galleria/GL09.JPG"
+                alt="Origini - foto 09"
+                class="gallery-mobile-photo"
+            >
+
+            <img
+                src="img/galleria/GL10.JPG"
+                alt="Origini - foto 10"
+                class="gallery-mobile-photo"
+            >
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
     <!-- SFONDO -->
-    <img src="img/Sfondo.jpg" alt="Sfondo" class="full-bg">
+    <!-- ===================================================== -->
+
+    <img
+        src="img/Sfondo.jpg"
+        alt="Sfondo"
+        class="full-bg"
+    >
+
+
+    <!-- ===================================================== -->
+    <!-- SCRIPT -->
+    <!-- ===================================================== -->
 
     <script src="galleriaorigini.js"></script>
-
     <script src="script.js"></script>
 
+
+    <!-- ===================================================== -->
+    <!-- GRAIN -->
+    <!-- ===================================================== -->
+
     <div class="grain"></div>
-    
+
 </main>
 
 </body>

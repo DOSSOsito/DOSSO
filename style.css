@@ -116,8 +116,18 @@ body {
     background-color: transparent;
 }
 
-.menu-column:has(.menu-checkbox:checked) {
-    background-color: rgba(255, 255, 255, 0.8);
+.menu-column:has(.menu-checkbox:checked)::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: rgba(255, 255, 255, 0.8);
+
+    backdrop-filter: invert(1);
+    -webkit-backdrop-filter: invert(1);
+
+
+    z-index: -1;
 }
 
 .menu-wrapper {
@@ -654,12 +664,17 @@ body.workinprogress {
 /* Overlay header sopra 3 colonne centrali (colonna 2-4 delle 5 centrali) */
 body[class] .overlay-central.desktop-only .overlay-header-text {
     position: absolute;
-    top: 50%;                       /* centro verticale */
-    left: calc(20% + 8px);          /* mantiene l’allineamento alle 3 colonne centrali */
-    width: calc(60% - 16px);        /* larghezza corretta */
-    transform: translateY(-50%);    /* sposta il div verso l’alto della metà della sua altezza */
+
+    top: 0;
+    bottom: 0;
+
+    left: calc(20% + 8px);
+    width: calc(60% - 16px);
+
     z-index: 6;
+
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 /* Stile interno */
@@ -698,9 +713,21 @@ body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
 /* MOBILE <768px UNIFICATO */
 /* ============================= */
 @media (max-width: 768px) {
-   
+    
+    @font-face {
+        font-family: "Source Code Pro Web";
+        src: url("fonts/SourceCodePro-Regular.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    body {
+        font-family: "Source Code Pro Web", monospace;
+    }
+
     html {
-        font-size: clamp(12px, 1.5vw, 14px);
+        font-size: clamp(11px, 1.5vw, 14px);
     }
 
     /* ============================= */
@@ -710,8 +737,10 @@ body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         height: 100vh;
-        gap: 10px;
+        gap: 0.625rem;
         padding: 0.625rem 0.625rem 0 0.625rem;
+        z-index:20;
+        position: relative;
     }
 
     /* Mostra solo 1° colonna e menu, nasconde le altre */
@@ -747,6 +776,15 @@ body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
         z-index: 4;
     }
 
+    .overlay-central.mobile-only .menu-column {
+    pointer-events: auto;
+}
+
+.overlay-central.mobile-only .menu-wrapper {
+    pointer-events: auto;
+}
+
+
     body:not(.home) .overlay-central.mobile-only .overlay-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -771,16 +809,21 @@ body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
     /* BLOCCO CONTATTI MOBILE SOPRA GRIGLIA */
     /* ============================= */
     .overlay-central.mobile-only .contact-block-mobile {
-        position: absolute;         /* sopra le colonne */
-        top: 5rem;
-        left: 0;                    /* allineamento a sinistra */
-        right: 0;                   /* estende fino al bordo destro */
-        z-index: 20;                /* sopra la griglia 3 colonne */
-        padding: 4rem 0.625rem 0.625rem 0.625rem;              /* padding interno */
-        box-sizing: border-box;
-        line-height: 1.3;
-        font-size: 1rem;
-    }
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+
+    z-index: 20;
+
+    padding: 0 0.625rem;
+    box-sizing: border-box;
+
+    line-height: 1.3;
+    font-size: 1rem;
+}
+
 
 /* Header DOSSO */
     .overlay-central.mobile-only h1 {
@@ -790,13 +833,13 @@ body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
     /* Stile testo e link come desktop */
     .overlay-central.mobile-only .contact-block-mobile p,
     .overlay-central.mobile-only .contact-block-mobile a {
-        font-family: "Lucida Console", monospace;
-        font-weight: 500;
-        letter-spacing: -0.025rem;
-        color: black;
-        text-decoration: none;
-        text-align: justify;
-    }
+    font-family: "Source Code Pro Web", monospace;
+    font-weight: 400;
+    letter-spacing: -0.025rem;
+    color: black;
+    text-decoration: none;
+    text-align: justify;
+}
 
     .overlay-central.mobile-only .contact-block-mobile a:hover {
         text-decoration: underline;
@@ -838,6 +881,210 @@ body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
     body[class] .overlay-central.desktop-only {
         display: none !important;
     }
+
+/* ============================= */
+/* TABELLA LAVORI MOBILE */
+/* ============================= */
+
+.mobile-jobs {
+    position: absolute;
+    top: 11rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    flex-direction: column;
+    z-index: 5;
+}
+
+.mobile-jobs .jobs-header {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.mobile-jobs .jobs-body .row {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.gallery-mobile {
+    position: relative;
+
+    width: 100%;
+    margin: 0;
+    padding: 120px 0.625rem 0 0.625rem;
+    z-index:5;
+}
+
+.gallery-mobile-images {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+
+    margin: 0;
+    padding: 0;
+}
+
+.gallery-mobile-photo {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    max-width: none;
+
+    margin: 0;
+    padding: 0;
+
+    object-fit: contain;
+}
+
+
+
+    /* ------------------------------------------------- */
+    /* HEADER MOBILE: LOGO + MENU */
+    /* ------------------------------------------------- */
+
+    .overlay-central.mobile-only {
+        position: absolute;
+
+        top: 0;
+        left: 0;
+
+        width: 100%;
+
+        z-index: 100;
+        pointer-events: none;
+    }
+
+
+    /*
+     * Il contenuto dell'overlay rimane cliccabile
+     */
+
+    .overlay-central.mobile-only .overlay-grid {
+        pointer-events: none;
+    }
+
+
+    .overlay-central.mobile-only .overlay-column {
+        pointer-events: none;
+    }
+
+
+    /*
+     * LOGO
+     */
+
+    .overlay-central.mobile-only .logo-link {
+        pointer-events: auto;
+    }
+
+
+    .overlay-central.mobile-only .logo {
+        pointer-events: auto;
+    }
+
+
+    /*
+     * MENU
+     */
+
+    .overlay-central.mobile-only .menu-column {
+        pointer-events: auto;
+    }
+
+
+    .overlay-central.mobile-only .menu-wrapper {
+        pointer-events: auto;
+    }
+
+
+    .overlay-central.mobile-only .menu-toggle {
+        pointer-events: auto;
+        position: relative;
+        z-index: 101;
+    }
+
+
+    .overlay-central.mobile-only .menu-checkbox {
+        pointer-events: auto;
+    }
+
+
+    .overlay-central.mobile-only .dropdown-menu {
+        pointer-events: auto;
+        position: relative;
+        z-index: 102;
+    }
+
+
+    /* ------------------------------------------------- */
+    /* NASCONDI ELEMENTI DESKTOP SUL TELEFONO */
+    /* ------------------------------------------------- */
+
+    .gallery-page.desktop-only {
+        display: none;
+    }
+
+
+    .gallery-image-area {
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    z-index: 5;
+
+    pointer-events: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gallery-image {
+    display: block;
+
+    max-width: 100%;
+    max-height: 100%;
+
+    width: auto;
+    height: auto;
+
+    object-fit: contain;
+
+    pointer-events: none;
+}
+
+
+
+    .gallery-arrow {
+        display: none;
+    }
+
+
+    .overlay-central.mobile-only {
+    z-index: 100;
+    pointer-events: none;
+}
+
+.overlay-central.mobile-only .menu-column {
+    pointer-events: auto;
+}
+
+.overlay-central.mobile-only .menu-wrapper {
+    pointer-events: auto;
+}
+
+.overlay-central.mobile-only .menu-toggle {
+    pointer-events: auto;
+}
+
 }
 
 /* Colonne ultra-wide di default nascoste */
@@ -960,4 +1207,418 @@ body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
 
 .jobs-header div.sort-desc::after {
     content: " ▲";
+}
+
+/* NASCONDE VISIVAMENTE LE SCROLLBAR DESKTOP */
+@media (min-width: 769px) {
+
+    html,
+    body {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+    }
+
+    .overlay-central.desktop-only,
+    .overlay-central.desktop-only .jobs-overlay,
+    .overlay-central.desktop-only .jobs-body {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .overlay-central.desktop-only::-webkit-scrollbar,
+    .overlay-central.desktop-only .jobs-overlay::-webkit-scrollbar,
+    .overlay-central.desktop-only .jobs-body::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+    }
+}
+
+/* ============================= */
+/* INFO SCORREVOLE */
+/* ============================= */
+
+body.info .info-scroll {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+
+    left: calc(20% + 8px);
+    width: calc(60% - 16px);
+
+    overflow: hidden;
+    z-index: 6;
+}
+
+body.info .info-content {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    transform: translateY(-100%);
+
+    animation: infoDrop 14s linear infinite;
+}
+
+@keyframes infoDrop {
+
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(100vh);
+    }
+
+}
+
+
+
+body[class] .overlay-central.desktop-only .overlay-header-text {
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+
+    left: calc(20% + 8px);
+    width: calc(60% - 16px);
+
+    z-index: 6;
+    box-sizing: border-box;
+
+    overflow: hidden;
+}
+body.info .info-content {
+    position: absolute;
+    left: 0;
+    right: 0;
+
+    animation: infoDrop 8s linear infinite;
+}
+
+@keyframes infoDrop {
+
+    from {
+        transform: translateY(-100%);
+    }
+
+    to {
+        transform: translateY(100vh);
+    }
+
+}
+
+/* ============================= */
+/* INFO SCORREVOLE */
+/* ============================= */
+
+body.info .info-scroll {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+
+    left: calc(20% + 8px);
+    width: calc(60% - 16px);
+
+    overflow: hidden;
+    z-index: 6;
+}
+
+body.info .info-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    animation: infoDrop 14s linear infinite;
+    cursor: pointer;
+}
+
+body.info .info-content.paused {
+    animation-play-state: paused;
+}
+
+@keyframes infoDrop {
+
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(100vh);
+    }
+
+}
+
+@media (min-width: 769px) {
+
+    html,
+    body {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    body.attrezzatura {
+        overflow: hidden;
+    }
+
+    .overlay-central.desktop-only {
+        overflow: hidden;
+    }
+
+    .jobs-overlay {
+        overflow: hidden;
+    }
+
+    .jobs-body {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+}
+
+@media (max-width: 768px) {
+    #door {
+        z-index: 9999 !important;
+        pointer-events: auto !important;
+    }
+
+
+}
+
+@media (max-width: 768px) {
+
+    .mobile-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 0.625rem;
+        padding: 0.625rem;
+
+        z-index: 10000;
+        pointer-events: none;
+    }
+
+    .mobile-header .logo-link,
+    .mobile-header .menu-column,
+    .mobile-header .menu-wrapper,
+    .mobile-header .menu-toggle,
+    .mobile-header .dropdown-menu {
+        pointer-events: auto;
+    }
+
+    .mobile-header .logo-link {
+        grid-column: 1;
+    }
+
+    .mobile-header .menu-column {
+        grid-column: 3;
+
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-start;
+
+        padding: 0.625rem;
+        border: none;
+    }
+
+    /* ============================= */
+/* GRIGLIA MOBILE VISIBILE */
+/* ============================= */
+
+body:not(.home) .grid {
+    display: none;
+}
+
+/* ===================================================== */
+/* GALLERIA ORIGINI – MOSTRA LE COLONNE MOBILE */
+/* ===================================================== */
+
+body.origini .grid {
+    display: grid;
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 0.625rem;
+    padding: 0.625rem 0.625rem 0 0.625rem;
+
+    z-index: 2;
+}
+
+
+body:not(.home) .grid > .column {
+    display: flex;
+
+    height: 100%;
+    min-height: 100vh;
+
+    border: 1px solid rgba(0, 0, 0, 0.3);
+
+    padding: 0.625rem;
+
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    min-width: 0;
+}
+
+    
+
+}
+
+@media (max-width: 768px) {
+
+    /* Nasconde solo il contenuto di logo e menu nella griglia */
+    body:not(.home) .grid > .column:first-child .logo-link {
+        display: none;
+    }
+
+    body:not(.home) .grid > .menu-column .menu-wrapper {
+        display: none;
+    }
+
+    .mobile-header .logo-link {
+    padding-top: 7px;
+    padding-left: 8px;
+}
+
+.mobile-header .menu-column {
+    padding-top: 2px;
+    padding-right: 8px;
+}
+.mobile-header .menu-toggle {
+    transform: translateY(-0.2rem);
+}
+}
+
+
+
+@media (max-width: 768px) {
+
+    .mobile-header .menu-column {
+        padding: 0.625rem;
+    }
+
+    .mobile-header .menu-toggle {
+        transform: translate(0.10rem, -0.3rem);
+    }
+
+    .mobile-header .menu-icon {
+        width: auto;
+        height: 2rem;
+        display: block;
+    }
+
+    
+}
+
+@media (max-width: 768px) {
+
+    body.origini .mobile-header {
+        height: 100vh;
+        grid-template-rows: 1fr;
+        align-items: stretch;
+    }
+
+    body.origini .mobile-header .menu-column {
+        height: 100%;
+        min-height: 100vh;
+        align-self: stretch;
+        box-sizing: border-box;
+    }
+
+    body.origini .mobile-header .menu-wrapper {
+        width: 100%;
+        height: 100%;
+    }
+
+    
+}
+
+
+/* ============================= */
+/* GALLERIA ORIGINI - MENU TOGGLE */
+/* ============================= */
+
+body.galleria .menu-toggle {
+    transform: translate(-1.8px, 1.6px);
+}
+
+/* ========================================= */
+/* HOME MOBILE - PAGINA COMPLETAMENTE FERMA */
+/* ========================================= */
+
+@media (max-width: 768px) {
+
+    body.home {
+        height: 100vh;
+        overflow: hidden !important;
+        position: fixed;
+        width: 100%;
+    }
+
+    body.home main {
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    body.home .grid {
+        position: fixed;
+        inset: 0;
+
+        width: 100%;
+        height: 100vh;
+        min-height: 100vh;
+
+        overflow: hidden;
+    }
+
+    body.home .grid > .column {
+        height: 100vh;
+        min-height: 100vh;
+        overflow: hidden;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .logo-link,
+    .menu-toggle {
+        -webkit-tap-highlight-color: transparent;
+        tap-highlight-color: transparent;
+        outline: none;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    .logo-link:focus,
+    .logo-link:active,
+    .menu-toggle:focus,
+    .menu-toggle:active {
+        outline: none;
+        background: transparent;
+    }
+
 }

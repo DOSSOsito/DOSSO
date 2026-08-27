@@ -166,89 +166,113 @@ window.addEventListener("resize", () => {
 
 
 /* ============================= */
-/* ORDINAMENTO TABELLA */
+/* ORDINAMENTO TABELLE */
+/* DESKTOP + MOBILE */
 /* ============================= */
 
+/*
+   Cerca TUTTE le tabelle.
 
-const headers =
-    document.querySelectorAll(".jobs-header div");
+   .jobs-table
+   → tabelle desktop
+
+   .mobile-jobs
+   → tabelle mobile
+*/
+
+document.querySelectorAll(".jobs-table, .mobile-jobs").forEach(table => {
+
+    const headers = Array.from(
+        table.querySelectorAll(".jobs-header > div")
+    );
+
+    const body = table.querySelector(".jobs-body");
+
+    if (!headers.length || !body) return;
 
 
-const body =
-    document.querySelector(".jobs-body");
+    /* ============================= */
+    /* ORDINE ORIGINALE */
+    /* ============================= */
+
+    const originalOrder = Array.from(
+        body.querySelectorAll(":scope > .row")
+    );
 
 
+    /* ============================= */
+    /* STATO ORDINAMENTO */
+    /* ============================= */
 
-if (headers.length && body) {
+    let activeColumn = null;
+    let sortState = 0;
+
+    /*
+     * 0 = ordine originale
+     * 1 = crescente
+     * 2 = decrescente
+     */
 
 
-    const originalOrder =
-        Array.from(body.querySelectorAll(".row"));
-
-
-
-    let sortState =
-        Array(headers.length).fill(0);
-
-
+    /* ============================= */
+    /* CLICK SUGLI HEADER */
+    /* ============================= */
 
     headers.forEach((header, index) => {
-
 
         header.style.cursor = "pointer";
 
 
-
-        header.addEventListener("mouseenter", () => {
-
-            header.classList.add("hover-sort");
-
-        });
+        header.addEventListener("click", function () {
 
 
+            /* ============================= */
+            /* SE CAMBIO COLONNA */
+            /* ============================= */
 
-        header.addEventListener("mouseleave", () => {
+            if (activeColumn !== index) {
 
-            header.classList.remove("hover-sort");
-
-        });
-
-
-
-
-
-        header.addEventListener("click", () => {
-
-
-
-            // reset underline altri
-
-            headers.forEach(h => {
-
-                h.classList.remove("sort-active", "sort-asc", "sort-desc");
-
-            });
-
-
-
-            sortState[index]++;
-
-
-
-            if (sortState[index] > 2) {
-
-                sortState[index] = 0;
+                activeColumn = index;
+                sortState = 1;
 
             }
 
 
+            /* ============================= */
+            /* SE CLICCO LA STESSA COLONNA */
+            /* ============================= */
+
+            else {
+
+                sortState++;
+
+                if (sortState > 2) {
+                    sortState = 0;
+                }
+
+            }
 
 
+            /* ============================= */
+            /* RIMUOVI FRECCE DA TUTTI */
+            /* ============================= */
 
-            // RESET
+            headers.forEach(h => {
 
-            if (sortState[index] === 0) {
+                h.classList.remove(
+                    "sort-active",
+                    "sort-asc",
+                    "sort-desc"
+                );
 
+            });
+
+
+            /* ============================= */
+            /* ORDINE ORIGINALE */
+            /* ============================= */
+
+            if (sortState === 0) {
 
                 originalOrder.forEach(row => {
 
@@ -256,75 +280,79 @@ if (headers.length && body) {
 
                 });
 
+                activeColumn = null;
 
                 return;
 
             }
 
+
             /* ============================= */
-    /* INDICATORE */
-    /* ============================= */
-
-    if (sortState[index] === 1) {
-        header.classList.add("sort-asc");
-    }
-
-    if (sortState[index] === 2) {
-        header.classList.add("sort-desc");
-    }
-
-
-    header.classList.add("sort-active");
-
-
-
-
-
+            /* AGGIUNGI STATO HEADER */
+            /* ============================= */
 
             header.classList.add("sort-active");
 
 
+            if (sortState === 1) {
+
+                header.classList.add("sort-asc");
+
+            } else {
+
+                header.classList.add("sort-desc");
+
+            }
 
 
+            /* ============================= */
+            /* PRENDI LE RIGHE */
+            /* ============================= */
 
-            const rows =
-                Array.from(body.querySelectorAll(".row"));
-
-
-
-            rows.sort((a,b) => {
-
-
-                const A =
-                    a.children[index]
-                    .textContent
-                    .trim()
-                    .toLowerCase();
+            const rows = Array.from(
+                body.querySelectorAll(":scope > .row")
+            );
 
 
+            /* ============================= */
+            /* ORDINA */
+            /* ============================= */
 
-                const B =
-                    b.children[index]
-                    .textContent
-                    .trim()
-                    .toLowerCase();
+            rows.sort((a, b) => {
+
+                const A = a.children[index]
+                    ? a.children[index]
+                        .textContent
+                        .trim()
+                        .toLowerCase()
+                    : "";
+
+                const B = b.children[index]
+                    ? b.children[index]
+                        .textContent
+                        .trim()
+                        .toLowerCase()
+                    : "";
 
 
+                return sortState === 1
 
+                    ? A.localeCompare(B, "it", {
+                        numeric: true,
+                        sensitivity: "base"
+                    })
 
-                return sortState[index] === 1
-
-                    ? A.localeCompare(B)
-
-                    : B.localeCompare(A);
-
-
+                    : B.localeCompare(A, "it", {
+                        numeric: true,
+                        sensitivity: "base"
+                    });
 
             });
 
 
-
-
+            /* ============================= */
+            /* APPLICA ORDINE */
+            /* ============================= */
 
             rows.forEach(row => {
 
@@ -332,19 +360,17 @@ if (headers.length && body) {
 
             });
 
-
-
-
         });
-
 
     });
 
+});
 
-}
+
 
 /* ============================= */
 /* DRAG COLOR INVERSION */
+/* DESKTOP + MOBILE */
 /* ============================= */
 
 (function () {
@@ -359,6 +385,7 @@ if (headers.length && body) {
     /* ============================= */
 
     const selection = document.createElement("div");
+
     selection.className = "drag-selection";
 
     document.body.appendChild(selection);
@@ -369,24 +396,22 @@ if (headers.length && body) {
     /* ============================= */
 
     const invert = document.createElement("div");
+
     invert.className = "drag-invert";
 
     document.body.appendChild(invert);
 
 
     /* ============================= */
-    /* MOUSE DOWN */
+    /* INIZIO SELEZIONE */
     /* ============================= */
 
-    document.addEventListener("mousedown", function (event) {
-
-        /* solo tasto sinistro */
-        if (event.button !== 0) return;
+    function startSelection(x, y) {
 
         selecting = true;
 
-        startX = event.clientX;
-        startY = event.clientY;
+        startX = x;
+        startY = y;
 
         selection.style.display = "block";
         invert.style.display = "block";
@@ -402,26 +427,22 @@ if (headers.length && body) {
 
         invert.style.width = "0px";
         invert.style.height = "0px";
-
-    });
+    }
 
 
     /* ============================= */
-    /* MOUSE MOVE */
+    /* AGGIORNA SELEZIONE */
     /* ============================= */
 
-    document.addEventListener("mousemove", function (event) {
+    function updateSelection(x, y) {
 
         if (!selecting) return;
 
-        const currentX = event.clientX;
-        const currentY = event.clientY;
+        const left = Math.min(startX, x);
+        const top = Math.min(startY, y);
 
-        const left = Math.min(startX, currentX);
-        const top = Math.min(startY, currentY);
-
-        const width = Math.abs(currentX - startX);
-        const height = Math.abs(currentY - startY);
+        const width = Math.abs(x - startX);
+        const height = Math.abs(y - startY);
 
 
         /* Rettangolo visibile */
@@ -440,15 +461,14 @@ if (headers.length && body) {
 
         invert.style.width = width + "px";
         invert.style.height = height + "px";
-
-    });
+    }
 
 
     /* ============================= */
-    /* MOUSE UP */
+    /* FINE SELEZIONE */
     /* ============================= */
 
-    document.addEventListener("mouseup", function () {
+    function endSelection() {
 
         if (!selecting) return;
 
@@ -456,6 +476,81 @@ if (headers.length && body) {
 
         selection.style.display = "none";
         invert.style.display = "none";
+    }
+
+
+    /* ============================= */
+    /* MOUSE */
+    /* ============================= */
+
+    document.addEventListener("mousedown", function (event) {
+
+        if (event.button !== 0) return;
+
+        startSelection(
+            event.clientX,
+            event.clientY
+        );
+
+    });
+
+
+    document.addEventListener("mousemove", function (event) {
+
+        if (!selecting) return;
+
+        updateSelection(
+            event.clientX,
+            event.clientY
+        );
+
+    });
+
+
+    document.addEventListener("mouseup", function () {
+
+        endSelection();
+
+    });
+
+
+    /* ============================= */
+    /* TOUCH MOBILE */
+    /* ============================= */
+
+    document.addEventListener("touchstart", function (event) {
+
+        if (event.touches.length !== 1) return;
+
+        const touch = event.touches[0];
+
+        startSelection(
+            touch.clientX,
+            touch.clientY
+        );
+
+    }, { passive: true });
+
+
+    document.addEventListener("touchmove", function (event) {
+
+        if (!selecting) return;
+
+        if (event.touches.length !== 1) return;
+
+        const touch = event.touches[0];
+
+        updateSelection(
+            touch.clientX,
+            touch.clientY
+        );
+
+    }, { passive: true });
+
+
+    document.addEventListener("touchend", function () {
+
+        endSelection();
 
     });
 
@@ -468,10 +563,7 @@ if (headers.length && body) {
 
         if (event.key === "Escape") {
 
-            selecting = false;
-
-            selection.style.display = "none";
-            invert.style.display = "none";
+            endSelection();
 
         }
 
@@ -479,3 +571,80 @@ if (headers.length && body) {
 
 })();
 
+/* ============================= */
+/* PAUSA INFO AL CLICK */
+/* ============================= */
+
+const infoContent = document.querySelector('.info-content');
+
+if (infoContent) {
+
+    infoContent.addEventListener('click', () => {
+
+        infoContent.classList.toggle('paused');
+
+    });
+
+}
+
+// =====================================================
+// PORTA → GALLERIA + ZOOM
+// =====================================================
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const door = document.getElementById("door");
+    const bg = document.querySelector(".full-bg");
+
+    if (!door) return;
+
+    let lastTap = 0;
+    let goingToGallery = false;
+
+    function openGallery() {
+
+        if (goingToGallery) return;
+
+        goingToGallery = true;
+
+        // Punto da cui parte lo zoom
+        const rect = door.getBoundingClientRect();
+
+        const x = (rect.left + rect.width / 2) / window.innerWidth * 100;
+        const y = (rect.top + rect.height / 2) / window.innerHeight * 100;
+
+        if (bg) {
+            bg.style.transformOrigin = `${x}% ${y}%`;
+            bg.classList.add("zoomed");
+        }
+
+        // Aspetta che finisca l'animazione
+        setTimeout(function () {
+            window.location.href = "galleria.html";
+        }, 2000);
+    }
+
+
+    // DESKTOP — doppio click
+    door.addEventListener("dblclick", function () {
+        openGallery();
+    });
+
+
+    // MOBILE — doppio tap
+    door.addEventListener("touchend", function (e) {
+
+        e.preventDefault();
+
+        const now = Date.now();
+
+        if (now - lastTap < 500) {
+            openGallery();
+            return;
+        }
+
+        lastTap = now;
+
+    }, { passive: false });
+
+});
