@@ -1,38 +1,99 @@
-/* ============================= */
-/* ZOOM DOOR */
-/* ============================= */
+// =====================================================
+// PORTA → GALLERIA + ZOOM
+// =====================================================
 
-const door = document.getElementById('door');
-const background = document.querySelector('.full-bg');
+document.addEventListener("DOMContentLoaded", function () {
 
+    const door = document.getElementById("door");
+    const bg = document.querySelector(".full-bg");
 
-if (door && background) {
+    if (!door) return;
 
-    door.addEventListener('dblclick', () => {
+    let lastTap = 0;
+    let goingToGallery = false;
 
+    function openGallery() {
+
+        if (goingToGallery) return;
+
+        goingToGallery = true;
+
+        // Punto da cui parte lo zoom
         const rect = door.getBoundingClientRect();
-        const bgRect = background.getBoundingClientRect();
 
-        const originX =
-            ((rect.left + rect.width / 2 - bgRect.left) / bgRect.width) * 100;
+        const x =
+            (rect.left + rect.width / 2) /
+            window.innerWidth * 100;
 
-        const originY =
-            ((rect.top + rect.height / 2 - bgRect.top) / bgRect.height) * 100;
+        const y =
+            (rect.top + rect.height / 2) /
+            window.innerHeight * 100;
+
+        if (bg) {
+
+            bg.style.transformOrigin =
+                `${x}% ${y}%`;
+
+            bg.classList.add("zoomed");
+
+        }
+
+        // Aspetta che finisca l'animazione
+        setTimeout(function () {
+
+            window.location.href =
+                "info.html";
+
+        },2000);
+
+    }
 
 
-        background.style.transformOrigin =
-            `${originX}% ${originY}%`;
+    // =============================================
+    // DESKTOP — DOPPIO CLICK
+    // =============================================
 
-        background.classList.add('zoomed');
+    door.addEventListener("dblclick", function () {
 
-
-        setTimeout(() => {
-            window.location.href = "galleria.html";
-        }, 1000);
+        openGallery();
 
     });
 
-}
+
+    // =============================================
+    // MOBILE — DOPPIO TAP
+    // =============================================
+
+    door.addEventListener("touchend", function (e) {
+
+        e.preventDefault();
+
+        const now = Date.now();
+
+        if (now - lastTap < 500) {
+
+            openGallery();
+
+            return;
+
+        }
+
+        lastTap = now;
+
+    }, { passive: false });
+
+
+    // =============================================
+    // AUTOMATICO DOPO 5 SECONDI
+    // =============================================
+
+    setTimeout(function () {
+
+        openGallery();
+
+    }, 45000);
+
+});
 
 
 
@@ -88,33 +149,69 @@ function initTooltips() {
 
 
                 const rect =
-                    cell.getBoundingClientRect();
+    cell.getBoundingClientRect();
 
 
-                const tooltipHeight =
-                    tooltip.offsetHeight;
+const tooltipHeight =
+    tooltip.offsetHeight;
 
 
+/* POSIZIONE VERTICALE */
 
-                if (
-                    rect.bottom + tooltipHeight + 10
-                    < window.innerHeight
-                ) {
+if (
+    rect.bottom + tooltipHeight + 10
+    < window.innerHeight
+) {
 
-                    tooltip.style.top =
-                        rect.bottom + 8 + "px";
+    tooltip.style.top =
+        rect.bottom + 8 + "px";
 
-                } else {
+} else {
 
-                    tooltip.style.top =
-                        rect.top - tooltipHeight - 8 + "px";
+    tooltip.style.top =
+        rect.top - tooltipHeight - 8 + "px";
 
-                }
+}
 
 
+/* ============================= */
+/* POSIZIONE ORIZZONTALE */
+/* ============================= */
 
-                tooltip.style.left =
-                    rect.left + "px";
+const margin = 10;
+
+let left = rect.left;
+
+const tooltipWidth =
+    tooltip.offsetWidth;
+
+
+/* destra */
+
+if (
+    left + tooltipWidth + margin >
+    window.innerWidth
+) {
+
+    left =
+        window.innerWidth -
+        tooltipWidth -
+        margin;
+
+}
+
+
+/* sinistra */
+
+if (left < margin) {
+
+    left = margin;
+
+}
+
+
+tooltip.style.left =
+    left + "px";
 
 
 
@@ -167,17 +264,18 @@ window.addEventListener("resize", () => {
 
 /* ============================= */
 /* ORDINAMENTO TABELLE */
-/* DESKTOP + MOBILE */
 /* ============================= */
-
 /*
-   Cerca TUTTE le tabelle.
+   LAVORI + GALLERIA
+   → funzionamento originale
 
-   .jobs-table
-   → tabelle desktop
+   ATTREZZATURA
+   → categoria:
+        ordina le categorie intere
 
-   .mobile-jobs
-   → tabelle mobile
+   → nome / tipo / descrizione / anno:
+        NON modifica l'ordine delle categorie
+        ordina solo le righe dentro ogni categoria
 */
 
 document.querySelectorAll(".jobs-table, .mobile-jobs").forEach(table => {
@@ -191,32 +289,323 @@ document.querySelectorAll(".jobs-table, .mobile-jobs").forEach(table => {
     if (!headers.length || !body) return;
 
 
-    /* ============================= */
-    /* ORDINE ORIGINALE */
-    /* ============================= */
+    /* ================================================= */
+    /* CONTROLLA SE È ATTREZZATURA */
+    /* ================================================= */
 
-    const originalOrder = Array.from(
+    const isAttrezzatura =
+        document.body.classList.contains("attrezzatura");
+
+
+    /* ================================================= */
+    /* TABELLE NORMALI */
+    /* LAVORI + GALLERIA */
+    /* ================================================= */
+
+    if (!isAttrezzatura) {
+
+        const originalOrder = Array.from(
+            body.querySelectorAll(":scope > .row")
+        );
+
+        let activeColumn = null;
+        let sortState = 0;
+
+
+        headers.forEach((header, index) => {
+
+            header.style.cursor = "pointer";
+
+
+            header.addEventListener("click", function () {
+
+
+                /* CAMBIO COLONNA */
+
+                if (activeColumn !== index) {
+
+                    activeColumn = index;
+                    sortState = 1;
+
+                }
+
+
+                /* STESSA COLONNA */
+
+                else {
+
+                    sortState++;
+
+                    if (sortState > 2) {
+                        sortState = 0;
+                    }
+
+                }
+
+
+                /* RESET FRECCE */
+
+                headers.forEach(h => {
+
+                    h.classList.remove(
+                        "sort-active",
+                        "sort-asc",
+                        "sort-desc"
+                    );
+
+                });
+
+
+                /* ORDINE ORIGINALE */
+
+                if (sortState === 0) {
+
+                    originalOrder.forEach(row => {
+                        body.appendChild(row);
+                    });
+
+                    activeColumn = null;
+
+                    return;
+
+                }
+
+
+                /* STATO HEADER */
+
+                header.classList.add("sort-active");
+
+
+                if (sortState === 1) {
+
+                    header.classList.add("sort-asc");
+
+                } else {
+
+                    header.classList.add("sort-desc");
+
+                }
+
+
+                /* PRENDI LE RIGHE */
+
+                const rows = Array.from(
+                    body.querySelectorAll(":scope > .row")
+                );
+
+
+                /* ORDINA */
+
+                rows.sort((a, b) => {
+
+                    const A = a.children[index]
+                        ? a.children[index]
+                            .textContent
+                            .trim()
+                            .toLowerCase()
+                        : "";
+
+                    const B = b.children[index]
+                        ? b.children[index]
+                            .textContent
+                            .trim()
+                            .toLowerCase()
+                        : "";
+
+
+                    return sortState === 1
+
+                        ? A.localeCompare(B, "it", {
+                            numeric: true,
+                            sensitivity: "base"
+                        })
+
+                        : B.localeCompare(A, "it", {
+                            numeric: true,
+                            sensitivity: "base"
+                        });
+
+                });
+
+
+                rows.forEach(row => {
+                    body.appendChild(row);
+                });
+
+            });
+
+        });
+
+
+        return;
+    }
+
+
+    /* ================================================= */
+    /* ATTREZZATURA */
+    /* ================================================= */
+
+
+    const allRows = Array.from(
         body.querySelectorAll(":scope > .row")
     );
 
 
-    /* ============================= */
-    /* STATO ORDINAMENTO */
-    /* ============================= */
+    /* ================================================= */
+    /* CREA LE CATEGORIE */
+    /* ================================================= */
+
+    const groups = [];
+
+    let currentGroup = null;
+
+
+    allRows.forEach(row => {
+
+        const cells = Array.from(row.children);
+
+        const category =
+            cells[0]
+                ? cells[0].textContent.trim()
+                : "";
+
+        const otherCellsEmpty =
+            cells.slice(1).every(cell =>
+                cell.textContent.trim() === ""
+            );
+
+
+        /*
+           Se categoria contiene testo
+           e tutte le altre celle sono vuote,
+           è una riga categoria.
+        */
+
+        if (category && otherCellsEmpty) {
+
+            currentGroup = {
+
+                categoryRow: row,
+
+                rows: []
+
+            };
+
+            groups.push(currentGroup);
+
+        }
+
+
+        /*
+           Altrimenti è una riga appartenente
+           alla categoria precedente.
+        */
+
+        else if (currentGroup) {
+
+            currentGroup.rows.push(row);
+
+        }
+
+    });
+
+
+    /* ================================================= */
+    /* ORDINE ORIGINALE DELLE CATEGORIE */
+    /* ================================================= */
+
+    const originalGroups = groups.map(group => ({
+
+        categoryRow: group.categoryRow,
+
+        rows: [...group.rows]
+
+    }));
+
 
     let activeColumn = null;
     let sortState = 0;
 
-    /*
-     * 0 = ordine originale
-     * 1 = crescente
-     * 2 = decrescente
-     */
+
+    /* ================================================= */
+    /* DISEGNA LA TABELLA */
+    /* ================================================= */
+
+    function renderGroups() {
+
+        groups.forEach(group => {
+
+            /*
+               Prima la categoria
+            */
+
+            body.appendChild(
+                group.categoryRow
+            );
 
 
-    /* ============================= */
-    /* CLICK SUGLI HEADER */
-    /* ============================= */
+            /*
+               Poi tutte le sue righe
+            */
+
+            group.rows.forEach(row => {
+
+                body.appendChild(row);
+
+            });
+
+        });
+
+    }
+
+
+    /* ================================================= */
+    /* ORDINA LE RIGHE DI UNA CATEGORIA */
+    /* ================================================= */
+
+    function sortRowsInsideGroup(
+        group,
+        column,
+        direction
+    ) {
+
+        group.rows.sort((a, b) => {
+
+            const A = a.children[column]
+                ? a.children[column]
+                    .textContent
+                    .trim()
+                    .toLowerCase()
+                : "";
+
+            const B = b.children[column]
+                ? b.children[column]
+                    .textContent
+                    .trim()
+                    .toLowerCase()
+                : "";
+
+
+            return direction === "asc"
+
+                ? A.localeCompare(B, "it", {
+                    numeric: true,
+                    sensitivity: "base"
+                })
+
+                : B.localeCompare(A, "it", {
+                    numeric: true,
+                    sensitivity: "base"
+                });
+
+        });
+
+    }
+
+
+    /* ================================================= */
+    /* CLICK HEADER */
+    /* ================================================= */
 
     headers.forEach((header, index) => {
 
@@ -226,36 +615,39 @@ document.querySelectorAll(".jobs-table, .mobile-jobs").forEach(table => {
         header.addEventListener("click", function () {
 
 
-            /* ============================= */
-            /* SE CAMBIO COLONNA */
-            /* ============================= */
+            /* ================================================= */
+            /* CAMBIO COLONNA */
+            /* ================================================= */
 
             if (activeColumn !== index) {
 
                 activeColumn = index;
+
                 sortState = 1;
 
             }
 
 
-            /* ============================= */
-            /* SE CLICCO LA STESSA COLONNA */
-            /* ============================= */
+            /* ================================================= */
+            /* STESSA COLONNA */
+            /* ================================================= */
 
             else {
 
                 sortState++;
 
                 if (sortState > 2) {
+
                     sortState = 0;
+
                 }
 
             }
 
 
-            /* ============================= */
-            /* RIMUOVI FRECCE DA TUTTI */
-            /* ============================= */
+            /* ================================================= */
+            /* RESET FRECCE */
+            /* ================================================= */
 
             headers.forEach(h => {
 
@@ -268,103 +660,173 @@ document.querySelectorAll(".jobs-table, .mobile-jobs").forEach(table => {
             });
 
 
-            /* ============================= */
+            /* ================================================= */
             /* ORDINE ORIGINALE */
-            /* ============================= */
+            /* ================================================= */
 
             if (sortState === 0) {
 
-                originalOrder.forEach(row => {
 
-                    body.appendChild(row);
+                /*
+                   Ripristina completamente
+                   categorie + righe.
+                */
+
+                groups.length = 0;
+
+
+                originalGroups.forEach(originalGroup => {
+
+                    groups.push({
+
+                        categoryRow:
+                            originalGroup.categoryRow,
+
+                        rows: [
+                            ...originalGroup.rows
+                        ]
+
+                    });
 
                 });
 
+
+                renderGroups();
+
+
                 activeColumn = null;
+
 
                 return;
 
             }
 
 
-            /* ============================= */
-            /* AGGIUNGI STATO HEADER */
-            /* ============================= */
+            /* ================================================= */
+            /* HEADER ATTIVO */
+            /* ================================================= */
 
-            header.classList.add("sort-active");
+            header.classList.add(
+                "sort-active"
+            );
 
 
             if (sortState === 1) {
 
-                header.classList.add("sort-asc");
+                header.classList.add(
+                    "sort-asc"
+                );
 
             } else {
 
-                header.classList.add("sort-desc");
+                header.classList.add(
+                    "sort-desc"
+                );
 
             }
 
 
-            /* ============================= */
-            /* PRENDI LE RIGHE */
-            /* ============================= */
-
-            const rows = Array.from(
-                body.querySelectorAll(":scope > .row")
-            );
+            const direction =
+                sortState === 1
+                    ? "asc"
+                    : "desc";
 
 
-            /* ============================= */
-            /* ORDINA */
-            /* ============================= */
+            /* ================================================= */
+            /* CATEGORIA */
+            /* ================================================= */
 
-            rows.sort((a, b) => {
-
-                const A = a.children[index]
-                    ? a.children[index]
-                        .textContent
-                        .trim()
-                        .toLowerCase()
-                    : "";
-
-                const B = b.children[index]
-                    ? b.children[index]
-                        .textContent
-                        .trim()
-                        .toLowerCase()
-                    : "";
+            if (index === 0) {
 
 
-                return sortState === 1
+                /*
+                   SOLO cliccando "categoria"
+                   cambiamo l'ordine dei gruppi.
+                */
 
-                    ? A.localeCompare(B, "it", {
-                        numeric: true,
-                        sensitivity: "base"
-                    })
+                groups.sort((a, b) => {
 
-                    : B.localeCompare(A, "it", {
-                        numeric: true,
-                        sensitivity: "base"
-                    });
+                    const A =
+                        a.categoryRow.children[0]
+                            ? a.categoryRow.children[0]
+                                .textContent
+                                .trim()
+                                .toLowerCase()
+                            : "";
+
+                    const B =
+                        b.categoryRow.children[0]
+                            ? b.categoryRow.children[0]
+                                .textContent
+                                .trim()
+                                .toLowerCase()
+                            : "";
+
+
+                    return direction === "asc"
+
+                        ? A.localeCompare(B, "it", {
+                            numeric: true,
+                            sensitivity: "base"
+                        })
+
+                        : B.localeCompare(A, "it", {
+                            numeric: true,
+                            sensitivity: "base"
+                        });
+
+                });
+
+
+                /*
+                   Le righe interne NON vengono toccate.
+                */
+
+                renderGroups();
+
+
+                return;
+
+            }
+
+
+            /* ================================================= */
+            /* TUTTI GLI ALTRI HEADER */
+            /* ================================================= */
+
+            /*
+               nome
+               tipo
+               descrizione
+               anno
+
+               NON modificano MAI l'ordine delle categorie.
+            */
+
+            groups.forEach(group => {
+
+                sortRowsInsideGroup(
+                    group,
+                    index,
+                    direction
+                );
 
             });
 
 
-            /* ============================= */
-            /* APPLICA ORDINE */
-            /* ============================= */
+            /*
+               Mantiene l'attuale ordine
+               delle categorie.
+            */
 
-            rows.forEach(row => {
-
-                body.appendChild(row);
-
-            });
+            renderGroups();
 
         });
 
     });
 
 });
+
 
 
 
@@ -572,79 +1034,205 @@ document.querySelectorAll(".jobs-table, .mobile-jobs").forEach(table => {
 })();
 
 /* ============================= */
-/* PAUSA INFO AL CLICK */
+/* METEO DUBINO (SO) */
 /* ============================= */
 
-const infoContent = document.querySelector('.info-content');
+async function loadWeather() {
 
-if (infoContent) {
+    const temperatureElement =
+        document.querySelector(".weather-temperature");
 
-    infoContent.addEventListener('click', () => {
+    const descriptionElement =
+        document.querySelector(".weather-description");
 
-        infoContent.classList.toggle('paused');
+    const windElement =
+        document.querySelector(".weather-wind");
 
-    });
 
+    try {
+
+        /*
+         * Coordinate di Dubino (SO)
+         */
+
+        const latitude = 46.171;
+        const longitude = 9.433;
+
+
+        const response = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,wind_speed_10m&timezone=Europe%2FRome`
+        );
+
+
+        const data = await response.json();
+
+        const current = data.current;
+
+
+        /* Temperatura */
+
+        temperatureElement.textContent =
+            `${Math.round(current.temperature_2m)}°C`;
+
+
+        /* Vento */
+
+        windElement.textContent =
+            `vento ${Math.round(current.wind_speed_10m)} km/h`;
+
+
+        /* Descrizione */
+
+        const weatherCode = current.weather_code;
+
+        let description = "";
+
+
+        if (weatherCode === 0) {
+            description = "sereno";
+        }
+
+        else if (
+            weatherCode === 1 ||
+            weatherCode === 2
+        ) {
+            description = "parzialmente nuvoloso";
+        }
+
+        else if (weatherCode === 3) {
+            description = "nuvoloso";
+        }
+
+        else if (
+            weatherCode >= 45 &&
+            weatherCode <= 48
+        ) {
+            description = "nebbia";
+        }
+
+        else if (
+            weatherCode >= 51 &&
+            weatherCode <= 57
+        ) {
+            description = "pioviggine";
+        }
+
+        else if (
+            weatherCode >= 61 &&
+            weatherCode <= 67
+        ) {
+            description = "pioggia";
+        }
+
+        else if (
+            weatherCode >= 71 &&
+            weatherCode <= 77
+        ) {
+            description = "neve";
+        }
+
+        else if (
+            weatherCode >= 80 &&
+            weatherCode <= 82
+        ) {
+            description = "rovesci";
+        }
+
+        else if (
+            weatherCode >= 95
+        ) {
+            description = "temporale";
+        }
+
+        else {
+            description = "variabile";
+        }
+
+
+        descriptionElement.textContent =
+            description;
+
+
+    } catch (error) {
+
+        console.error(
+            "Errore caricamento meteo:",
+            error
+        );
+
+        descriptionElement.textContent =
+            "meteo non disponibile";
+
+    }
 }
 
-// =====================================================
-// PORTA → GALLERIA + ZOOM
-// =====================================================
 
-document.addEventListener("DOMContentLoaded", function () {
+/* Avvio */
 
-    const door = document.getElementById("door");
-    const bg = document.querySelector(".full-bg");
-
-    if (!door) return;
-
-    let lastTap = 0;
-    let goingToGallery = false;
-
-    function openGallery() {
-
-        if (goingToGallery) return;
-
-        goingToGallery = true;
-
-        // Punto da cui parte lo zoom
-        const rect = door.getBoundingClientRect();
-
-        const x = (rect.left + rect.width / 2) / window.innerWidth * 100;
-        const y = (rect.top + rect.height / 2) / window.innerHeight * 100;
-
-        if (bg) {
-            bg.style.transformOrigin = `${x}% ${y}%`;
-            bg.classList.add("zoomed");
-        }
-
-        // Aspetta che finisca l'animazione
-        setTimeout(function () {
-            window.location.href = "galleria.html";
-        }, 2000);
-    }
+loadWeather();
 
 
-    // DESKTOP — doppio click
-    door.addEventListener("dblclick", function () {
-        openGallery();
-    });
+/* Aggiorna ogni 10 minuti */
+
+setInterval(
+    loadWeather,
+    10 * 60 * 1000
+);
 
 
-    // MOBILE — doppio tap
-    door.addEventListener("touchend", function (e) {
+/* ============================= */
+/* DATA E ORA */
+/* ============================= */
 
-        e.preventDefault();
+function updateDateTime() {
 
-        const now = Date.now();
+    const dateElement =
+        document.querySelector(".weather-date");
 
-        if (now - lastTap < 500) {
-            openGallery();
-            return;
-        }
+    const timeElement =
+        document.querySelector(".weather-time");
 
-        lastTap = now;
+    if (!dateElement || !timeElement) return;
 
-    }, { passive: false });
+    const now = new Date();
 
-});
+    const giorno =
+        String(now.getDate()).padStart(2, "0");
+
+    const mese =
+        String(now.getMonth() + 1).padStart(2, "0");
+
+    const anno =
+        now.getFullYear();
+
+    const ora =
+        String(now.getHours()).padStart(2, "0") +
+        ":" +
+        String(now.getMinutes()).padStart(2, "0");
+
+
+    /* DATA */
+
+    dateElement.textContent =
+        `${giorno}.${mese}.${anno}`;
+
+
+    /* ORA */
+
+    timeElement.textContent =
+        ora;
+}
+
+
+/* Aggiorna immediatamente */
+
+updateDateTime();
+
+
+/* Aggiorna ogni minuto */
+
+setInterval(
+    updateDateTime,
+    60 * 1000
+);
+

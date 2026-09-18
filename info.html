@@ -50,26 +50,21 @@
     <!-- Overlay centrale -->
 <div class="overlay-central desktop-only">
 
-    <!-- HEADER + TESTO sopra griglia -->
-    <div class="overlay-header-text info-scroll">
-    <div class="info-content">
-        <h1>info</h1>
-
-        <p class="contact-block">
-            <a href="mailto:info@dossostudio.it">info@dossostudio.it</a><br>
-            +39 348 685 8446<br>
-            Dubino (SO)
-        </p>
-    </div>
-</div>
-
 
     <!-- Griglia compositiva -->
     <div class="overlay-grid">
         <div class="overlay-column"></div>
+        <div class="overlay-column page-title">
+        <span>+ info</span>
+    </div>
         <div class="overlay-column"></div>
-        <div class="overlay-column"></div>
-        <div class="overlay-column"></div>
+        <div class="overlay-column"><div class="contact-block-desktop">
+        <p>
+            <a href="mailto:info@dossostudio.it">info@dossostudio.it</a><br>
+            +39 348 685 8446<br>
+            Dubino (SO)
+        </p>
+    </div></div>
         <div class="overlay-column"></div>
     </div>
 </div>
@@ -77,22 +72,13 @@
     <!-- OVERLAY MOBILE -->
 <div class="overlay-central mobile-only">
 
-    <!-- BLOCCO TESTO CONTATTI MOBILE -->
-    <div class="contact-block-mobile">
-        <h1>info</h1>
-
-        <p class="contact-block">
-            <a href="mailto:info@dossostudio.it">info@dossostudio.it</a><br>
-            +39 348 685 8446<br>
-            Dubino (SO)
-        </p>
-    </div>
-
     <div class="overlay-grid">
         <div class="overlay-column">
             <a href="home.html" class="logo-link">
                 <img src="img/logosemplificato.svg" alt="DOSSO" class="logo">
             </a>
+
+            <span class="mobile-page-title">+ info</span>
         </div>
         <div class="overlay-column"></div>
         <div class="overlay-column menu-column">
@@ -108,13 +94,36 @@
                     <a href="info.html" class="active">info</a>
                 </nav>
             </div>
+
+            <!-- BLOCCO TESTO CONTATTI MOBILE -->
+            <div class="contact-block-mobile">
+
+            <p class="contact-block">
+            <a href="mailto:info@dossostudio.it">info@dossostudio.it</a><br>
+            +39 348 685 8446<br>
+            Dubino (SO)
+        </p>
+    </div>
+
         </div>
     </div>
 </div>
 
-    
-    
+    <footer class="weather-footer">
 
+    <div class="weather-ticker">
+        <div class="weather-content">
+    <span class="weather-date">--.--.----</span>
+    <span class="weather-time">--:--</span>
+    <span>Dubino (SO)</span>
+    <span class="weather-temperature">--°C</span>
+    <span class="weather-description">caricamento...</span>
+    <span class="weather-wind">vento -- km/h</span>
+    <span>info@dossostudio.it</span>
+    </div>
+
+</footer>
+    
     <!-- SFONDO -->
     <img src="img/Sfondo.jpg" alt="Sfondo" class="full-bg">
 

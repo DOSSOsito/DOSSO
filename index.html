@@ -11,11 +11,23 @@
 
   <div class="intro-container">
     <a href="home.html" class="enter-site">
-  <img src="img/logosemplificato.svg" id="dvd-logo">
-</a>
+      <img src="img/logosemplificato.svg" id="dvd-logo">
+    </a>
   </div>
 
-<div class="grain"></div>
+  <div class="grain"></div>
+
+  <script>
+    setTimeout(function () {
+
+      document.body.classList.add("fade-out");
+
+      setTimeout(function () {
+        window.location.href = "home.html";
+      }, 800);
+
+    }, 800);
+  </script>
 
 </body>
 </html>

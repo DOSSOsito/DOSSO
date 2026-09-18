@@ -111,8 +111,8 @@ body {
     flex-direction: column;
     align-items: flex-end;
     position: relative;
-    padding-top: 0.625rem;
-    padding-right: 0.625rem;
+    padding: 0.625rem;
+    padding-bottom: 0;
     background-color: transparent;
 }
 
@@ -120,15 +120,13 @@ body {
     content: "";
     position: absolute;
     inset: 0;
-
-    background: rgba(255, 255, 255, 0.8);
-
+    background: rgb(255, 255, 255, 0.8);
     backdrop-filter: invert(1);
     -webkit-backdrop-filter: invert(1);
-
-
     z-index: -1;
 }
+
+
 
 .menu-wrapper {
     display: flex;
@@ -145,12 +143,6 @@ body {
     cursor: pointer;
 }
 
-/*
-.menu-toggle:hover {
-    text-decoration: underline;
-}
-*/
-
 .menu-checkbox {
     display: none;
 }
@@ -159,10 +151,9 @@ body {
     display: none;
     flex-direction: column;
     align-items: flex-end;
-    margin-top: 0.3125rem;
-    gap: 0.03125rem;
+    margin-top: 79px;
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.5rem, 0.5rem, 0.5rem, 0;
     opacity: 0;
     transform: translateY(-0.3125rem);
     transition: opacity 0.3s ease, transform 0.3s ease;
@@ -176,7 +167,7 @@ body {
 
 .dropdown-menu a {
     cursor: pointer;
-    padding: 0.125rem 0;
+    padding: 0 0 0.25rem 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -185,12 +176,28 @@ body {
     font-size: 1rem;
     text-decoration: none;
     color: black;
+    position: relative;
 }
 
-.dropdown-menu a:hover,
-.dropdown-menu a.active {
-    text-decoration: underline;
+.dropdown-menu a::before {
+    content: "+";
+    position: absolute;
+    left: 0;
 }
+
+
+
+.dropdown-menu a:hover::after,
+.dropdown-menu a.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 3px;
+    height: 0.075rem;
+    background-color: #000;
+}
+
 
 /* ============================= */
 /* SFONDO */
@@ -216,7 +223,7 @@ body {
 
     opacity: 0.03;
 
-    z-index: 50;
+    z-index: 1000001;
 
     mix-blend-mode: difference;
 
@@ -418,6 +425,13 @@ body[class] .overlay-central.desktop-only .overlay-column a:hover {
     min-height: 100%;
     min-height: 0; /* FONDAMENTALE per flex scroll */
     background: transparent;
+    padding-bottom: 2rem;
+}
+
+@media (min-width: 769px) {
+    .jobs-table {
+        padding-top: 242px;
+    }
 }
 
 .jobs-body {
@@ -441,7 +455,8 @@ body[class] .overlay-central.desktop-only .overlay-column a:hover {
     grid-template-columns: repeat(5, 1fr);
     gap: 0.625rem;
     padding: 0.625rem;
-    padding-bottom: 2.2rem;
+    padding-top: 0;
+    padding-bottom: 101px;
     flex-shrink: 0;
     
 }
@@ -517,13 +532,50 @@ body[class] .overlay-central.desktop-only .overlay-column a:hover {
 /* header ordinamento */
 
 .jobs-header div {
+    position: relative;
     cursor: pointer;
+    padding-right: 1rem;
 }
-
 
 .jobs-header div:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
+
+.jobs-header div:hover::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: #000;
+}
+
+
+/* Indicatore ordinamento - stato normale */
+.jobs-header div:not(.sort-asc):not(.sort-desc)::after {
+    content: "+";
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+/* Indicatore ordinamento - crescente */
+.jobs-header div.sort-asc::after {
+    content: "▼";
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+/* Indicatore ordinamento - decrescente */
+.jobs-header div.sort-desc::after {
+    content: "▲";
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
 
 .jobs-body a.row {
     display: grid;
@@ -797,7 +849,6 @@ body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
 
     body:not(.home) .overlay-central.mobile-only .overlay-column {
         border: 1px solid rgba(0, 0, 0, 0.3);
-        padding: 0.625rem;
         display: flex;
         flex-direction: column;
         min-width: 0;
@@ -810,35 +861,32 @@ body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
     /* ============================= */
     .overlay-central.mobile-only .contact-block-mobile {
     position: absolute;
-    top: 50%;
+    top: 66px;
     left: 0;
     right: 0;
-    transform: translateY(-50%);
-
     z-index: 20;
 
-    padding: 0 0.625rem;
     box-sizing: border-box;
 
     line-height: 1.3;
     font-size: 1rem;
+
+    
 }
 
 
 /* Header DOSSO */
-    .overlay-central.mobile-only h1 {
-        margin-bottom: 4rem; /* distanza tra header e testo */
-    }
 
     /* Stile testo e link come desktop */
     .overlay-central.mobile-only .contact-block-mobile p,
     .overlay-central.mobile-only .contact-block-mobile a {
     font-family: "Source Code Pro Web", monospace;
     font-weight: 400;
-    letter-spacing: -0.025rem;
+    letter-spacing: -0.035rem;
     color: black;
     text-decoration: none;
     text-align: justify;
+    
 }
 
     .overlay-central.mobile-only .contact-block-mobile a:hover {
@@ -888,10 +936,11 @@ body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
 
 .mobile-jobs {
     position: absolute;
-    top: 11rem;
+    top: 242px;
     left: 0;
     right: 0;
     bottom: 0;
+    padding-bottom: 2rem;
 
     display: flex;
     flex-direction: column;
@@ -900,6 +949,7 @@ body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
 
 .mobile-jobs .jobs-header {
     grid-template-columns: repeat(3, 1fr);
+    
 }
 
 .mobile-jobs .jobs-body .row {
@@ -911,7 +961,7 @@ body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
 
     width: 100%;
     margin: 0;
-    padding: 120px 0.625rem 0 0.625rem;
+    padding: 118px 0.625rem 3rem 0.625rem;
     z-index:5;
 }
 
@@ -1014,11 +1064,12 @@ body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
     }
 
 
-    .overlay-central.mobile-only .dropdown-menu {
-        pointer-events: auto;
-        position: relative;
-        z-index: 102;
-    }
+    .overlay-central.mobile-only .dropdown-menu,
+    .mobile-header.mobile-only .dropdown-menu {
+    pointer-events: auto;
+    position: relative;
+    z-index: 102;
+}
 
 
     /* ------------------------------------------------- */
@@ -1181,7 +1232,7 @@ body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
 
     background: transparent;
 
-    z-index: 99998;
+    z-index: 1000000;
 
     display: none;
 
@@ -1242,122 +1293,44 @@ body[class] .overlay-central.desktop-only .overlay-header-text a:hover {
 }
 
 /* ============================= */
-/* INFO SCORREVOLE */
+/* INFO FISSO AL CENTRO */
 /* ============================= */
 
-body.info .info-scroll {
+body.info .overlay-central.desktop-only .info-scroll {
     position: absolute;
-    top: 0;
-    bottom: 0;
+
+    top: 50%;
+    bottom: auto;
 
     left: calc(20% + 8px);
     width: calc(60% - 16px);
 
-    overflow: hidden;
-    z-index: 6;
-}
+    height: auto;
 
-body.info .info-content {
-    position: absolute;
+    transform: translateY(-50%);
 
-    top: 0;
-    left: 0;
-    right: 0;
-
-    transform: translateY(-100%);
-
-    animation: infoDrop 14s linear infinite;
-}
-
-@keyframes infoDrop {
-
-    0% {
-        transform: translateY(-100%);
-    }
-
-    100% {
-        transform: translateY(100vh);
-    }
-
-}
-
-
-
-body[class] .overlay-central.desktop-only .overlay-header-text {
-    position: absolute;
-
-    top: 0;
-    bottom: 0;
-
-    left: calc(20% + 8px);
-    width: calc(60% - 16px);
+    overflow: visible;
 
     z-index: 6;
-    box-sizing: border-box;
-
-    overflow: hidden;
-}
-body.info .info-content {
-    position: absolute;
-    left: 0;
-    right: 0;
-
-    animation: infoDrop 8s linear infinite;
 }
 
-@keyframes infoDrop {
+body.info .overlay-central.desktop-only .info-content {
+    position: relative;
 
-    from {
-        transform: translateY(-100%);
-    }
+    top: auto;
+    left: auto;
+    right: auto;
 
-    to {
-        transform: translateY(100vh);
-    }
+    transform: none;
 
+    animation: none;
+
+    overflow: visible;
+
+    cursor: default;
 }
 
-/* ============================= */
-/* INFO SCORREVOLE */
-/* ============================= */
 
-body.info .info-scroll {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-
-    left: calc(20% + 8px);
-    width: calc(60% - 16px);
-
-    overflow: hidden;
-    z-index: 6;
-}
-
-body.info .info-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-
-    animation: infoDrop 14s linear infinite;
-    cursor: pointer;
-}
-
-body.info .info-content.paused {
-    animation-play-state: paused;
-}
-
-@keyframes infoDrop {
-
-    0% {
-        transform: translateY(-100%);
-    }
-
-    100% {
-        transform: translateY(100vh);
-    }
-
-}
 
 @media (min-width: 769px) {
 
@@ -1607,7 +1580,6 @@ body.galleria .menu-toggle {
     .logo-link,
     .menu-toggle {
         -webkit-tap-highlight-color: transparent;
-        tap-highlight-color: transparent;
         outline: none;
         user-select: none;
         -webkit-user-select: none;
@@ -1621,4 +1593,408 @@ body.galleria .menu-toggle {
         background: transparent;
     }
 
+}
+
+/* ============================= */
+/* FOOTER METEO */
+/* ============================= */
+
+.weather-footer {
+    position: fixed;
+
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 2rem;
+
+    background: #000;
+    color: #fff;
+
+    overflow: hidden;
+
+    z-index: 1000;
+
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+
+/* Contenitore dello scorrimento */
+
+.weather-ticker {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+}
+
+
+/* Contenuto */
+
+.weather-content {
+    display: flex;
+    align-items: center;
+
+    gap: 3rem;
+
+    white-space: nowrap;
+
+    padding-left: 100%;
+
+    animation: weatherScroll 25s linear infinite;
+}
+
+
+/* Separazione tra le informazioni */
+
+.weather-content span:not(:last-child)::after {
+    content: "+";
+
+    margin-left: 3rem;
+}
+
+
+/* Animazione */
+
+@keyframes weatherScroll {
+
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-100%);
+    }
+
+}
+@media (max-width: 768px) {
+
+    /* ===================================================== */
+    /* HOME + ORIGINI                                        */
+    /* ===================================================== */
+
+    body.home .menu-column:has(.menu-checkbox:checked)::before,
+    body.origini .menu-column:has(.menu-checkbox:checked)::before {
+
+        background: rgba(255, 255, 255, 0.8);
+
+        backdrop-filter: invert(1);
+        -webkit-backdrop-filter: invert(1);
+    }
+
+
+    /* ===================================================== */
+    /* ATTREZZATURA + GALLERIA + INFO                        */
+    /* ===================================================== */
+
+    body.attrezzatura .menu-column:has(.menu-checkbox:checked)::before,
+    body.galleria:not(.origini) .menu-column:has(.menu-checkbox:checked)::before,
+    body.info .menu-column:has(.menu-checkbox:checked)::before {
+
+        background: rgba(180, 180, 180, 1);
+        left: -1px;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+
+    /* ===================================================== */
+    /* LAVORI                                                */
+    /* ===================================================== */
+
+    body.lavori .overlay-central.mobile-only
+    .menu-column:has(.menu-checkbox:checked)::before {
+
+        background: rgba(180, 180, 180, 1);
+        left: -1px;
+        border: 1px solid rgba(180, 180, 180, 1);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+
+        z-index: 1;
+    }
+
+
+    /* ===================================================== */
+    /* LAVORI — RETTANGOLO SOPRA LA TABELLA                  */
+    /* ===================================================== */
+
+    body.lavori .overlay-central.mobile-only
+    .menu-column:has(.menu-checkbox:checked) {
+
+        z-index: 9999;
+    }
+
+
+    /* ===================================================== */
+    /* MENU SOPRA IL CONTENUTO                               */
+    /* ===================================================== */
+
+    body.attrezzatura .overlay-central.mobile-only:has(.menu-checkbox:checked),
+    body.galleria:not(.origini) .overlay-central.mobile-only:has(.menu-checkbox:checked),
+    body.info .overlay-central.mobile-only:has(.menu-checkbox:checked) {
+
+        z-index: 9999;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    body.lavori .jobs-overlay,
+    body.lavori .jobs-table {
+        z-index: auto 
+    }
+
+}
+
+.weather-footer {
+    position: fixed;
+    z-index: 999999;
+}
+
+/* ============================= */
+/* DISABILITA SELEZIONE IMMAGINI */
+/* ============================= */
+
+/* Logo */
+.logo,
+.logo-link,
+.logo-link img,
+#dvd-logo,
+
+/* Icona menu */
+.menu-icon,
+.menu-toggle img,
+
+/* Frecce galleria */
+.gallery-arrow,
+.gallery-arrow img {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* ============================= */
+/* TITOLO PAGINA */
+/* ============================= */
+
+.page-title {
+    position: relative;
+    box-sizing: border-box;
+}
+
+.page-title span {
+    position: absolute;
+    top: 121px;
+    left: 0;
+    width: 100%;
+
+    padding: 0;
+    margin: 0;
+
+    text-align: right;
+    z-index: 10000;
+}
+
+.page-title span::first-letter {
+    float: left;
+}
+
+
+/* SELEZIONE TESTO */
+
+.page-title span::selection {
+    background: #000;
+    color: #fff;
+}
+
+.page-title span::-moz-selection {
+    background: #000;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+
+    .mobile-page-title {
+        display: block;
+        width: 100%;
+        padding-top: 75px;
+        margin: 0;
+
+        box-sizing: border-box;
+
+        text-align: right;
+        z-index: 100001;
+    }
+
+    .mobile-page-title::first-letter {
+        float: left;
+    }
+
+    .mobile-page-title::selection {
+        background: #000;
+        color: #fff;
+    }
+
+    .mobile-page-title::-moz-selection {
+        background: #000;
+        color: #fff;
+    }
+
+    .attrezzatura .logo,
+.galleria:not(.origini) .logo,
+.lavori .logo,
+.info .logo {
+    transform: translate(0.625rem, 0.625rem);
+}
+
+
+}
+
+@media (max-width: 768px) {
+
+    body.info:has(.menu-checkbox:checked) .contact-block-mobile {
+        display: none !important;
+    }
+
+    .overlay-central.mobile-only .contact-block-mobile {
+        text-align: right;
+    }
+
+    .overlay-central.mobile-only .contact-block-mobile p {
+        text-align: right;
+    }
+
+    
+
+}
+
+@media (min-width: 769px) {
+
+    .contact-block-desktop {
+        width: 100%;
+        padding-top: 121px;
+        margin: 0;
+        text-align: right;
+        font-size: 0.98rem;
+        line-height: 1.1;
+    }
+
+    .contact-block-desktop p {
+        margin: 0;
+        padding: 0;
+    }
+
+    .contact-block-desktop a {
+        color: black;
+        text-decoration: none;
+    }
+
+    .contact-block-desktop a:hover {
+        text-decoration: underline;
+    }
+
+}
+
+
+.weather-date,
+.weather-time {
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+
+    /* TABELLA normalmente sopra la griglia */
+    body.lavori .mobile-jobs {
+        z-index: 50;
+        pointer-events: auto;
+    }
+
+    body.lavori .mobile-jobs .jobs-body,
+    body.lavori .mobile-jobs .row {
+        pointer-events: auto;
+    }
+
+    /* MENU APERTO: la terza colonna torna sopra la tabella */
+    body.lavori .overlay-central.mobile-only
+    .menu-column:has(.menu-checkbox:checked) {
+        z-index: 9999;
+    }
+
+    /* Rettangolo del menu sopra la tabella */
+    body.lavori .overlay-central.mobile-only
+    .menu-column:has(.menu-checkbox:checked)::before {
+        z-index: 1;
+    }
+
+    /* Contenuto del menu sopra il rettangolo */
+    body.lavori .overlay-central.mobile-only
+    .menu-column:has(.menu-checkbox:checked) .menu-wrapper {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* LAVORI — menu aperto sopra la tabella */
+    body.lavori .overlay-central.mobile-only
+    .overlay-grid:has(.menu-checkbox:checked) {
+        z-index: 1000;
+    }
+
+    body.lavori .overlay-central.mobile-only
+    .overlay-grid:has(.menu-checkbox:checked) .menu-column {
+        z-index: 9999;
+    }
+
+    body.lavori .overlay-central.mobile-only
+    .overlay-grid:has(.menu-checkbox:checked) .menu-column::before {
+        z-index: 1;
+    }
+
+    body.lavori .overlay-central.mobile-only
+    .overlay-grid:has(.menu-checkbox:checked) .menu-wrapper {
+        position: relative;
+        z-index: 2;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    html,
+    body {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+    }
+
+    * {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    *::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+    }
+}
+
+.intro {
+    transition: opacity 0.8s ease;
+}
+
+.intro.fade-out {
+    opacity: 0;
 }
