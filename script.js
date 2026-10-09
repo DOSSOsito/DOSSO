@@ -837,6 +837,31 @@ document.querySelectorAll(".jobs-table, .mobile-jobs").forEach(table => {
 
 (function () {
 
+    // =============================
+    // PAGINE ABILITATE
+    // =============================
+
+    const allowedPages = [
+        "home.html",
+        "galleriadefuneriis.html",
+        "galleriaflanella.html",
+        "galleriaorigini.html",
+        "galleriapalearec.html",
+        "galleriapasci.html",
+        "galleriarocknrodes.html",
+        "galleriasnookerdyspo.html"
+    ];
+
+    const currentPage = window.location.pathname
+        .split("/")
+        .pop()
+        .toLowerCase();
+
+    // Se la pagina non è autorizzata, interrompe la funzione
+    if (!allowedPages.includes(currentPage)) {
+        return;
+    }
+
     let selecting = false;
 
     let startX = 0;
@@ -1236,3 +1261,256 @@ setInterval(
     60 * 1000
 );
 
+/* ===================================== */
+/* ATTREZZATURA MOBILE */
+/* RIGA NERA + TOOLTIP OVERFLOW */
+/* ===================================== */
+
+(function () {
+
+    // Solo pagina Attrezzatura
+    if (!document.body.classList.contains("attrezzatura")) {
+        return;
+    }
+
+    // Solo mobile
+    const mobile = window.matchMedia("(max-width: 768px)");
+
+    let activeTooltip = null;
+
+    /* ===================================== */
+    /* RIMUOVE IL TOOLTIP */
+    /* ===================================== */
+
+    function removeTooltip() {
+
+        if (activeTooltip) {
+            activeTooltip.remove();
+            activeTooltip = null;
+        }
+
+    }
+
+
+    /* ===================================== */
+    /* INIZIALIZZA LE TABELLE */
+    /* ===================================== */
+
+    function initMobileEquipment() {
+
+        if (!mobile.matches) {
+            removeTooltip();
+            return;
+        }
+
+        const tables = document.querySelectorAll(
+            ".mobile-jobs, .jobs-table"
+        );
+
+        tables.forEach(table => {
+
+            const rows = table.querySelectorAll(
+                ".jobs-body > .row"
+            );
+
+            rows.forEach(row => {
+
+                // Evita eventi duplicati
+                if (row.dataset.mobileEquipmentReady) return;
+
+                row.dataset.mobileEquipmentReady = "true";
+
+                row.addEventListener("click", function (event) {
+
+                    // Ignora i clic su eventuali tooltip
+                    if (event.target.closest(".cell-tooltip")) {
+                        return;
+                    }
+
+                    // Evidenzia una sola riga alla volta
+                    document.querySelectorAll(
+                        "body.attrezzatura .mobile-row-selected"
+                    ).forEach(selected => {
+                        selected.classList.remove(
+                            "mobile-row-selected"
+                        );
+                    });
+
+                    row.classList.add("mobile-row-selected");
+
+                    // Individua la cella direttamente toccata
+                    const cell = event.target.closest("div");
+
+                    if (
+                        !cell ||
+                        !row.contains(cell) ||
+                        cell.parentElement !== row
+                    ) {
+                        removeTooltip();
+                        return;
+                    }
+
+                    // Tooltip solo per testo effettivamente troncato
+                    if (cell.scrollWidth <= cell.clientWidth) {
+                        removeTooltip();
+                        return;
+                    }
+
+                    removeTooltip();
+
+                    // Crea il tooltip con lo stile originale
+                    const tooltip = document.createElement("div");
+
+                    tooltip.className = "cell-tooltip";
+                    tooltip.textContent = cell.textContent.trim();
+
+                    document.body.appendChild(tooltip);
+                    activeTooltip = tooltip;
+
+                    const rect = cell.getBoundingClientRect();
+                    const margin = 10;
+
+                    // Dimensioni adattate al testo
+                    tooltip.style.position = "fixed";
+                    tooltip.style.left = margin + "px";
+                    tooltip.style.right = "auto";
+                    tooltip.style.top = "auto";
+                    tooltip.style.bottom = "auto";
+                    tooltip.style.width = "max-content";
+                    tooltip.style.maxWidth =
+                        `calc(100vw - ${margin * 2}px)`;
+                    tooltip.style.boxSizing = "border-box";
+                    tooltip.style.zIndex = "99999";
+
+                    // Misura il tooltip dopo averlo inserito nel DOM
+                    const tooltipWidth = tooltip.offsetWidth;
+                    const tooltipHeight = tooltip.offsetHeight;
+
+                    // Posizionamento orizzontale:
+                    // segue la cella senza uscire dallo schermo
+                    let left = rect.left;
+
+                    if (
+                        left + tooltipWidth + margin >
+                        window.innerWidth
+                    ) {
+                        left =
+                            window.innerWidth -
+                            tooltipWidth -
+                            margin;
+                    }
+
+                    if (left < margin) {
+                        left = margin;
+                    }
+
+                    tooltip.style.left = left + "px";
+
+                    // Posizionamento verticale:
+                    // preferisce sotto la cella
+                    if (
+                        rect.bottom + tooltipHeight + 8 <
+                        window.innerHeight
+                    ) {
+
+                        tooltip.style.top =
+                            rect.bottom + 8 + "px";
+
+                    } else {
+
+                        tooltip.style.top = "auto";
+
+                        tooltip.style.bottom =
+                            window.innerHeight -
+                            rect.top +
+                            8 + "px";
+
+                    }
+
+                });
+
+            });
+
+        });
+
+    }
+
+
+    /* ===================================== */
+    /* AVVIO */
+    /* ===================================== */
+
+    initMobileEquipment();
+
+
+    /* ===================================== */
+    /* RESIZE */
+    /* ===================================== */
+
+    window.addEventListener("resize", function () {
+
+        removeTooltip();
+        initMobileEquipment();
+
+    });
+
+
+    /* ===================================== */
+    /* CHIUSURA TOOLTIP TOCCANDO FUORI */
+    /* ===================================== */
+
+    document.addEventListener("click", function (event) {
+
+        if (!event.target.closest(
+            "body.attrezzatura .mobile-jobs, " +
+            "body.attrezzatura .jobs-table"
+        )) {
+            removeTooltip();
+        }
+
+    });
+
+
+    /* ===================================== */
+    /* CHIUSURA DURANTE LO SCORRIMENTO */
+    /* ===================================== */
+
+    window.addEventListener("scroll", removeTooltip, true);
+
+})();
+
+/* ===================================== */
+/* URL GALLERIE */
+/* ===================================== */
+
+(function () {
+
+    const galleryPages = [
+        "galleriasnookerdyspo.html",
+        "galleriaorigini.html",
+        "galleriaflanella.html",
+        "galleriadefuneriis.html",
+        "galleriapalearec.html",
+        "galleriapasci.html",
+        "galleriarocknrodes.html"
+    ];
+
+    const currentPage = window.location.pathname
+        .split("/")
+        .pop()
+        .toLowerCase();
+
+    if (galleryPages.includes(currentPage)) {
+
+        window.history.replaceState(
+            null,
+            "",
+            window.location.pathname.replace(
+                currentPage,
+                "galleria.html"
+            ) + window.location.search + window.location.hash
+        );
+
+    }
+
+})();
