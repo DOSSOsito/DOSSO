@@ -2620,3 +2620,22 @@ body.galleria .menu-toggle {
     }
 
 }
+/* INFO MOBILE — MENU SOPRA IL TESTO */
+@media (max-width: 768px) {
+
+    body.info:has(.menu-checkbox:checked)
+    .overlay-central.mobile-only {
+        z-index: 99999;
+    }
+
+    body.info:has(.menu-checkbox:checked)
+    .overlay-central.mobile-only .overlay-grid {
+        z-index: 99999;
+    }
+
+    body.info:has(.menu-checkbox:checked)
+    .overlay-central.mobile-only .menu-column {
+        z-index: 99999;
+    }
+
+}
